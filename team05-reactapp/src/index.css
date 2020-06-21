@@ -1,7 +1,37 @@
 body {
-  background-color: #282c34;
+  background-color: lightblue;
   color: white;
-  padding: 40px;
   font-family: Arial;
   text-align: center;
+}
+
+#header {
+  background-color: #dddddd;
+  color: black;
+}
+
+#footer {
+  clear: both;
+  background-color: #dddddd;
+  color: black;
+
+}
+
+#left-sidebar {
+  width: 200px;
+  float: left;
+  background-color: #aafed6;
+  position: relative;
+  z-index: 2;
+  color: black;
+}
+
+#content {
+  background-color: #eeeeee;
+  float: left;
+  width: 100%;
+  box-sizing: border-box;
+  margin-left: -200px;
+  padding-left: 200px;
+  color: black;
 }

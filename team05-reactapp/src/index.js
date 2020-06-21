@@ -2,38 +2,26 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css'
 
-class MyForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      age: null,
-    };
-  }
-  myChangeHandler = (event) => {
-    let nam = event.target.name;
-    let val = event.target.value;
-    this.setState({[nam]: val});
-  }
+
+class App extends React.Component {
   render() {
     return (
-      <form>
-      <h1>Hello {this.state.username} {this.state.age}</h1>
-      <p>Enter your name:</p>
-      <input
-        type='text'
-        name='username'
-        onChange={this.myChangeHandler}
-      />
-      <p>Enter your age:</p>
-      <input
-        type='text'
-        name='age'
-        onChange={this.myChangeHandler}
-      />
-      </form>
+      <div id="wrapper">
+        <div id="header">Header</div>
+        <div id="left-sidebar">Left Sidebar</div>
+        <div id="content">
+          <div id="inner-content">
+            Main Conetent
+          </div>
+        </div>
+        <div id="footer">Footer</div>
+      </div>
     );
   }
 }
 
-ReactDOM.render(<MyForm />, document.getElementById('root'));
+//const myfirstelement = <h1>Hello React!</h1>
+
+//ReactDOM.render(myfirstelement, document.getElementById('root'));
+
+ReactDOM.render(<App />, document.getElementById('root'));
