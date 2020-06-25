@@ -1,0 +1,11 @@
+.home_content {
+    position: absolute;
+    bottom: 100px;
+    height: 50%;
+    width: 50%;
+    left: 500px;
+    border: 4px darkslategrey solid;
+    transition: opacity 1s ease-in-out;
+    transition-duration: 1000;
+    /* background-image: url("./../Home/static/background.jpg"); */
+}
