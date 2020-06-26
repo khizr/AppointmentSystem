@@ -46,7 +46,7 @@ class Home extends React.Component {
             style={{ borderRadius: 50}}
             className="button"
             endIcon={<MapIcon />}>
-            Map</Button>
+            Clinics Near You</Button>
           </Link>
 
           <Button variant="contained"

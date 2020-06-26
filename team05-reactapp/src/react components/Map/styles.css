@@ -21,6 +21,11 @@
     background-image: url("./background.jpg");
   }
 
+  .con{
+    text-align: left;
+    position: fixed;
+  }
+
   #round-container {
     border-radius: 25px;
     background:lightblue;
@@ -41,8 +46,6 @@
     /* border: 15px solid green;   */
   }
 
-
-  
   .button {
     display: inline-block;
     padding: 10px 10px;
@@ -65,5 +68,39 @@
     box-shadow: 0 5px #666;
     transform: translateY(4px);
   }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: blue;
+    color: black;
+  }
   
+  td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
   
+  tr:hover {background-color: rgb(62, 179, 218);}
+  th:hover {background-color: rgb(62, 179, 218);}
+  
+  .bookButton {
+    background-color: rgb(6, 6, 56); /* Green */
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.5s;
+    cursor: pointer;
+  }
+
+  .bookButton:hover {
+    background-color: red;
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+  }
