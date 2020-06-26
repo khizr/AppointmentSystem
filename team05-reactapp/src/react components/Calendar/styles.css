@@ -1,0 +1,80 @@
+.banner {
+    height: 100px;
+    padding: 20px;
+    background-color: aqua;
+    position: relative;
+    color:blue;
+  }
+
+  body {
+    color: darkslategrey;
+    background-color: white;
+    margin: 0px;
+    font-family: "Helvetica Neue", Helvetica, sans-serif;
+  }
+  th{
+      padding: 10px;
+      font-size: 1.5em;
+  }
+  table, th, td{
+      table-layout:fixed;
+      border-collapse: solid skyblue;
+      border: 1px solid skyblue;
+  }
+  th:hover{
+      background:blue;
+  }
+  .table{
+    margin:auto;
+    margin-top: 30px;
+    margin-left:50px;
+    width: 700px;
+    float:left
+  }
+  .rowDays{
+    margin: auto;
+    width: 100%;
+    border: 3px solid #42b6f5;
+  }
+  .rowWeek{
+      border:2px solid black;
+      width:100%;
+      background:rgb(51, 147, 226);
+  }
+
+  .calendarBanner{
+      text-align: center;
+      background: rgb(14, 46, 226);
+      font-size: 2.5em;
+      letter-spacing: 1px;
+      color: white;
+      padding:25px;
+    }
+    .currentDay{
+        background: #3734f1;
+        float:right;
+        height:500px;
+        width:500px;
+        margin:20px;
+        padding:10px;
+    }
+
+    img{
+        border-radius: 50%;
+        max-width: 100px;
+        float:left;
+        margin-left:50px;
+    }
+
+    .clinicName{
+        position:absolute;
+        font-size: 1.5em;
+        margin-top: 20px;
+        margin-left:170px;
+    }
+    .clinicNumber{
+        position:absolute;
+        font-size: 1em;
+        margin-top: 50px;
+        margin-left:180px;
+    }
