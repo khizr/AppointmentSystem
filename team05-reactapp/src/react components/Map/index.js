@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import HomeIcon from '@material-ui/icons/Home';
 import { Link } from "react-router-dom";
-
 import "./styles.css";
 
 /* Component for the Map page */
@@ -38,17 +37,17 @@ class Map extends React.Component {
                 <th>Book An Appointment</th>
               </tr>
               <tr>
-                <td>Mahfooz Clinic</td>
+                <td><b>Mahfooz Clinic</b></td>
                 <td>123 Bay St</td>
                 <td><button className="bookButton">Book Now</button></td>
               </tr>
               <tr>
-                <td>Cloud Clinic</td>
+                <td><b>Cloud Clinic</b></td>
                 <td>123 Recovery Street</td>
                 <td><button className="bookButton">Book Now</button></td>
               </tr>
               <tr>
-                <td>Fast Healing Walk-in</td>
+                <td><b>Fast Healing Walk-in</b></td>
                 <td>333 close to you St</td>
                 <td><button className="bookButton">Book Now</button></td>
               </tr>
