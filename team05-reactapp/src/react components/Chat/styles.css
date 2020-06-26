@@ -1,0 +1,39 @@
+#chatbox {
+	/* Add properties below */
+    position: relative;
+    border-radius: 25px;
+    height: 600px;
+    width: 600px;
+    margin-top: 60px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 40px;
+    background-color: rgb(255, 255, 255);
+    padding-left: 10px;
+}
+
+#messageList {
+    float: right;
+}
+
+.message {
+	/* Add properties below */
+    color: black;
+    display: block;
+    background-color: rgb(199, 199, 199);
+    margin: 10px;
+    margin-right: 30px;
+    border-radius: 25px;
+    min-height: 20px;
+    max-width: 300px;
+    padding : 10px;
+
+}
+
+#textbox {
+    margin-top: 30px;
+    margin-right: 10px;
+    border-radius: 25px;
+    width: 450px;
+    height: 20px;
+}
