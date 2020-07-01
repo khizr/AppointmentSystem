@@ -63,12 +63,12 @@
         padding:10px;
     }
 
-    img{
+    /* img{
         border-radius: 50%;
         max-width: 100px;
         float:left;
         margin-left:50px;
-    }
+    } */
 
     .clinicName{
         position:absolute;

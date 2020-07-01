@@ -6,7 +6,7 @@ import ChatIcon from '@material-ui/icons/Chat';
 import MapIcon from '@material-ui/icons/Map';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import banner from "./static/banner.png"
+import Banner from "./../Home/static/banner.png"
 import HomeContent from "./../Home Content";
 // import { makeStyles } from '@material-ui/core/styles';
 
@@ -18,8 +18,8 @@ class Home extends React.Component {
     render() {
       return (
         <div className="home__bg center">
+          <img className="home_banner" src={Banner} alt="Banner" />;
           <HomeContent></HomeContent>
-          <img className="home_banner" src={banner} alt="Banner" />;
           <Link className="component__button-link" to={"./../Calendar"}>
             <Button variant="contained"
             color="secondary" 

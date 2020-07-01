@@ -1,8 +1,8 @@
 import React from "react";
 import "./styles.css";
-import Image from "./../Home/static/background.jpg";
-import Image2 from "./../Home/static/banner.png";
-import Image3 from "./../Home/static/background.jpg";
+import Image from "./../Home Content/static/healthcare.jpg";
+import Image2 from "./../Home Content/static/clinics.jpg";
+import Image3 from "./../Home Content/static/patients.jpg";
 
 const image_array = [Image,
                      Image2, 
@@ -21,7 +21,7 @@ class HomeContent extends React.Component {
   handleInputChange = () => {
     image_index += 1;
 
-    if (image_index === 2) {
+    if (image_index === 3) {
         image_index = 0;
     }
 
@@ -38,7 +38,7 @@ class HomeContent extends React.Component {
     return (
       <div className="home_content"
            onClick={this.handleInputChange} 
-           style={ {backgroundImage: "url(" + this.state.image + ")" }}>
+           style={ {backgroundImage: "url(" + this.state.image + ")" , backgroundSize: 'cover'} }>
       </div>
     );
   }
