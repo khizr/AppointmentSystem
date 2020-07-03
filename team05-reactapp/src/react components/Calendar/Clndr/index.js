@@ -78,18 +78,34 @@ class Clndr extends React.Component {
         </div>
         <div className="currentDay">
       <h2 className="h2me">{this.state.currentDate}</h2>
-      <div className="timeSlot">9:00-9:15 AM</div>
-      <div className="timeSlot">9:15-9:30 AM</div>
-      <div className="timeSlot">9:30-9:45 AM</div>
-      <div className="timeSlot">9:45-10:00 AM</div>
-
-      <div className="timeSlot">10:00-10:15 AM</div>
-      <div className="timeSlot">10:15-10:30 AM</div>
-      <div className="timeSlot">10:30-10:45 AM</div>
-      <div className="timeSlot">10:45-11:00 AM</div>
       
+    <form>
+        <label for="time">Choose a Time to request an Appointment: </label>
+        <select>
+            <option value="9">9:00AM</option>
+            <option value="9.5">9:30AM</option>
+            <option value="10">10:00AM</option>
+            <option value="10.5">10:30AM</option>
+            <option value="11">11:00AM</option>
+            <option value="11.5">11:30AM</option>
+            <option value="12">12:00PM</option>
+            <option value="12.5">12:30PM</option>
+            <option value="1">1:00PM</option>
+            <option value="1.5">1:30PM</option>
+            <option value="2">2:00PM</option>
+            <option value="2.5">2:30PM</option>
+            <option value="3">3:00PM</option>
+            <option value="3.5">3:30PM</option>
+            <option value="4">4:00PM</option>
+            <option value="4.5">4:30PM</option>
+            <option value="5">5:00PM</option>
+            <option value="5.5">5:30PM</option>
+            <option value="6">6:00PM</option>
+        </select><span> </span>
+        <input type="submit" value="Submit"></input>
+    </form>
         </div>
-        </div>
+    </div>
       );
     }
   }

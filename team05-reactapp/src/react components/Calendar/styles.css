@@ -5,11 +5,11 @@
     position: relative;
     color:blue;
   }
-  .h2me{
-      text-align:center;
-      color:white;
-      font-size:1.7em;
-  }
+    .h2me{
+        text-align:center;
+        color:white;
+        font-size:1.7em;
+    }
   body {
     color: darkslategrey;
     background-color: white;
@@ -23,7 +23,8 @@
   table, th, td{
       table-layout:fixed;
       border-collapse: solid skyblue;
-      border: 1px solid skyblue;
+      border: 2px solid blue;
+      background: skyblue;
   }
   th:hover{
       background:blue;
@@ -38,7 +39,7 @@
   .rowDays{
     margin: auto;
     width: 100%;
-    border: 3px solid #42b6f5;
+    border: 2px solid blue;
   }
   .rowWeek{
       border:2px solid black;
@@ -57,18 +58,19 @@
     .currentDay{
         background: #3734f1;
         float:right;
-        height:500px;
+        height:200px;
         width:500px;
         margin:20px;
+        margin-top: 90px;
         padding:10px;
     }
 
-    /* img{
+    .myImage{
         border-radius: 50%;
         max-width: 100px;
         float:left;
         margin-left:50px;
-    } */
+    }
 
     .clinicName{
         position:absolute;
