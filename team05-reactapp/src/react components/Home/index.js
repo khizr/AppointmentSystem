@@ -6,15 +6,17 @@ import ChatIcon from '@material-ui/icons/Chat';
 import MapIcon from '@material-ui/icons/Map';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import Banner from "./../Home/static/banner.png"
+import Banner from "./static/banner.png"
 import HomeContent from "./../Home Content";
-// import { makeStyles } from '@material-ui/core/styles';
+import styles from "./styles";
 
 // import styles from "./styles"
 import "./styles.css";
 
 /* Component for the Home page */
+
 class Home extends React.Component {
+
     render() {
       return (
         <div className="home__bg center">
@@ -23,18 +25,17 @@ class Home extends React.Component {
           <Link className="component__button-link" to={"./../Calendar"}>
             <Button variant="contained"
             color="secondary" 
-            style={{ borderRadius: 50}}
+            style={styles.buttonStyle}
             className="button"
             endIcon={<EventIcon />}>
             Calendar
             </Button>
-            
           </Link>
 
           <Link className="component__button-link" to={"./../Chat"}>
             <Button variant="contained"
             color="secondary" 
-            style={{ borderRadius: 50}}
+            style={styles.buttonStyle}
             className="button"
             endIcon={<ChatIcon />}>
             Chat</Button>
@@ -43,22 +44,24 @@ class Home extends React.Component {
           <Link className="component__button-link" to={"./../Map"}>
             <Button variant="contained"
             color="secondary" 
-            style={{ borderRadius: 50}}
+            style={styles.buttonStyle}
             className="button"
             endIcon={<MapIcon />}>
             Clinics Near You</Button>
           </Link>
 
-          <Button variant="contained"
-            color="secondary"
-            style={{ borderRadius: 50}}
-            className="button_log_reg"
-            endIcon={<VpnKeyIcon />}>
-            Login</Button>
+          <Link className="component__button-link" to={"./../Admin Login"}>
+            <Button variant="contained"
+              color="secondary"
+              style={styles.buttonStyle}
+              className="button_log_reg"
+              endIcon={<VpnKeyIcon />}>
+              Login</Button>
+          </Link>
 
           <Button variant="contained"
             color="secondary" 
-            style={{ borderRadius: 50}}
+            style={styles.buttonStyle}
             className="button_log_reg"
             endIcon={<AddCircleIcon />}>
             Register</Button>    

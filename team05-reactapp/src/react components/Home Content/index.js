@@ -38,7 +38,7 @@ class HomeContent extends React.Component {
     return (
       <div className="home_content"
            onClick={this.handleInputChange} 
-           style={ {backgroundImage: "url(" + this.state.image + ")" , backgroundSize: 'cover'} }>
+           style={ {backgroundImage: "url(" + this.state.image + ")"} }>
       </div>
     );
   }

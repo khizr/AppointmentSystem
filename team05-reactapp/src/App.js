@@ -9,6 +9,11 @@ import Home from './react components/Home';
 import Calendar from './react components/Calendar';
 import Chat from './react components/Chat';
 import Map from './react components/Map';
+import AdminLogin from './react components/Admin Login';
+import UserLogin from './react components/User Login';
+import ClinicRegister from './react components/Clinic Registration';
+import PatientRegister from './react components/Patient Registration';
+
 
 
 class App extends React.Component {
@@ -18,6 +23,12 @@ class App extends React.Component {
 //   state = {
 //     abc: "123"
 //   }
+
+  state = {
+    patients: [],
+    clinics:[]
+  }
+
 
   render() {
     return (
@@ -39,6 +50,23 @@ class App extends React.Component {
 
             <Route exact path='/Chat'>
                 <Chat/>
+            </Route>
+
+            
+            <Route exact path='/Admin Login'>
+                <AdminLogin/>
+            </Route>
+
+            <Route exact path='/User Login'>
+                <UserLogin state={this.state}/>
+            </Route>
+
+            <Route exact path='/Clinic Registration'>
+                <ClinicRegister/>
+            </Route>
+
+            <Route exact path='/Patient Registration'>
+                <PatientRegister/>
             </Route>
             
           </Switch>
