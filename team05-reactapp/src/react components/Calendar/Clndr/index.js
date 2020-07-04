@@ -1,10 +1,16 @@
 import React from "react";
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import Button from "@material-ui/core/Button";
 
 class Clndr extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             currentDate: "Click on a day on the Calendar",
+            currentCalendarMonth: "June",
+            currentMonthIndex: 0,
+            months: ["June", "July", "August", "September", "October", "November", "December"],
             currentMonth: "June",
             currentDay: "1",
             currentYear: "2020"
@@ -14,13 +20,34 @@ class Clndr extends React.Component {
         const newDate = "Schedule for: " + this.state.currentMonth + " " + a + ", " + this.state.currentYear;
         this.setState({currentDate: newDate});
     }
+
+    changeMonthUp = () => {
+        if (this.state.currentMonthIndex <  (this.state.months.length - 1)){
+            const num = this.state.currentMonthIndex + 1;
+            this.setState({currentMonthIndex: num});
+            const newMonth = this.state.months[num];
+            this.setState({currentMonth: newMonth});
+            this.setState({currentCalendarMonth: newMonth});
+        }
+    }
+
+    changeMonthDown = () => {
+        if (this.state.currentMonthIndex >  0){
+            const num = this.state.currentMonthIndex - 1;
+            this.setState({currentMonthIndex: num});
+            const newMonth = this.state.months[num];
+            this.setState({currentMonth: newMonth});
+            this.setState({currentCalendarMonth: newMonth});
+        }
+    }
+
     render() {
       return (
         <div>
         <div className="table">
-            <div className="calendarBanner"><strong>June 2020</strong></div>
+      <div className="calendarBanner"><strong><Button onClick={() => this.changeMonthDown()} endIcon={<ArrowBackIosIcon />}></Button>{this.state.currentCalendarMonth + " " + this.state.currentYear}<Button onClick={() => this.changeMonthUp()} endIcon={<ArrowForwardIosIcon />}></Button></strong></div>
             <table className="rowDays">
-                <tr className="rowWeek">
+                {/*<tr className="rowWeek">
                     <th>Sun</th>
                     <th>Mon</th>
                     <th>Tue</th>
@@ -28,7 +55,7 @@ class Clndr extends React.Component {
                     <th>Thu</th>
                     <th>Fri</th>
                     <th>Sat</th>
-                </tr>
+                </tr>*/}
                 <tr className="rowDays">
                     <th></th>
                     <th onClick={() => this.setDate("1")}>1</th>
@@ -78,18 +105,34 @@ class Clndr extends React.Component {
         </div>
         <div className="currentDay">
       <h2 className="h2me">{this.state.currentDate}</h2>
-      <div className="timeSlot">9:00-9:15 AM</div>
-      <div className="timeSlot">9:15-9:30 AM</div>
-      <div className="timeSlot">9:30-9:45 AM</div>
-      <div className="timeSlot">9:45-10:00 AM</div>
-
-      <div className="timeSlot">10:00-10:15 AM</div>
-      <div className="timeSlot">10:15-10:30 AM</div>
-      <div className="timeSlot">10:30-10:45 AM</div>
-      <div className="timeSlot">10:45-11:00 AM</div>
       
+    <form>
+        <label for="time">Choose a time to request an appointment: </label>
+        <select>
+            <option value="9">9:00AM</option>
+            <option value="9.5">9:30AM</option>
+            <option value="10">10:00AM</option>
+            <option value="10.5">10:30AM</option>
+            <option value="11">11:00AM</option>
+            <option value="11.5">11:30AM</option>
+            <option value="12">12:00PM</option>
+            <option value="12.5">12:30PM</option>
+            <option value="1">1:00PM</option>
+            <option value="1.5">1:30PM</option>
+            <option value="2">2:00PM</option>
+            <option value="2.5">2:30PM</option>
+            <option value="3">3:00PM</option>
+            <option value="3.5">3:30PM</option>
+            <option value="4">4:00PM</option>
+            <option value="4.5">4:30PM</option>
+            <option value="5">5:00PM</option>
+            <option value="5.5">5:30PM</option>
+            <option value="6">6:00PM</option>
+        </select><span> </span>
+        <input type="submit" value="Submit"></input>
+    </form>
         </div>
-        </div>
+    </div>
       );
     }
   }

@@ -8,11 +8,12 @@ class Calendar extends React.Component {
     render() {
       return (
         <div>
-        <div className="banner"><img src={Logo} alt="Clinic Logo"></img>
-        <div className="clinicName">Company Name</div>
-        <div className="clinicNumber">Company Number</div>
-        </div>
-        <Clndr></Clndr>
+          <div className="banner">
+            <img className = "myImage" src={Logo} alt="Clinic Logo"></img>
+          <div className="clinicName">Company Name</div>
+          <div className="clinicNumber">Company Number</div>
+          </div>
+          <Clndr></Clndr>
         </div>
       );
     }
