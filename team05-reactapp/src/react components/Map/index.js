@@ -4,11 +4,139 @@ import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import HomeIcon from '@material-ui/icons/Home';
 import { Link } from "react-router-dom";
+import Slider from '@material-ui/core/Slider';
+import Typography from '@material-ui/core/Typography';
 import "./styles.css";
 
 /* Component for the Map page */
+class Clinic extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {distance:0};
+  }
+  changeState = () => {
+    this.setState({distance:10})
+  }
+  render(){
+    return(
+      <tr>
+        <td><b>{this.props.name}</b></td>
+        <td>{this.props.address}</td>
+        <td>{this.state.distance}</td>
+        <td><button className="bookButton">Book Now</button></td>
+      </tr>
+    )
+  }
+}
+
+let clinics = [<Clinic name="Mahfooz Clinic" address="123 Bay St" postal="2" />, 
+<Clinic name="Cloud Clinic" address="123 Recovery Street Bay St" postal="6" />,
+<Clinic name="Fast Healing Walk-in" address="333 close to you St" postal="11" />]
+
+class Table extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {postal: "", myClinics: clinics}
+  }
+  static getDerivedStateFromProps(props, state) {
+    return {postal: props.postal, myClinics: clinics};
+  }
+  reload = () => {
+    window.location.reload();
+  }
+  render() {
+    return (
+      <div>
+      <div id = "round-container2">
+            <h2>Closest Clinics to You Are:</h2>
+            <table>
+              <tr>
+                <th>Clinic</th>
+                <th>Location</th>
+                <th>Distance From You</th>
+                <th>Book An Appointment</th>
+              </tr>
+              {this.state.myClinics}
+          </table>
+      </div>
+        <button style={{ borderRadius: 50}} className="button" onClick={this.reload}>
+        <h2>Search Again</h2>
+        </button>
+      </div>
+    );
+  }
+}
+
+function valuetext(value) {
+  return `${value}`;
+}
+
 class Map extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {show: false, postal: '', showSearch: true};
+      this.allowedPostalCodes = ["1","2","3","4","5","6","7","8","9","10"]
+    }
+    showTable = () => {
+
+      if (this.allowedPostalCodes.includes(this.state.postal)){
+        this.setState({showSearch: false});
+      var sortedClinics = []
+      for (let i =0; i < clinics.length; i++){
+        sortedClinics[i] = Math.abs(parseInt(this.state.postal)-parseInt(clinics[i].props.postal))
+
+      }
+      for (let i =0; i < clinics.length; i++){
+        let lowest = Math.min.apply(Math, sortedClinics)
+        let indexClinic = sortedClinics.indexOf(lowest)
+        console.log(indexClinic)
+        let first = clinics[0];
+        clinics[0] = clinics[indexClinic];
+        clinics[indexClinic] = first;
+        //console.log("entered");
+      }
+      this.setState({show: true});
+      }
+      else if(this.state.postal == ""){
+        alert("Please enter a postal code")
+      }
+      else{
+        alert(this.state.postal + " is not a Valid Postal Code\n" + "Valid Postal codes are: "+this.allowedPostalCodes)
+      }
+    }
+    savePostal = (event) => {
+      this.setState({postal: event.target.value});
+    }
+
     render() {
+      let clinicsTable;
+      let searchBar;
+      let slider;
+      let test;
+      if (this.state.show) {
+        clinicsTable = <Table postal={this.state.postal}/>;
+      };
+      if (this.state.showSearch){
+        slider = <Slider
+                  defaultValue={3}
+                  getAriaValueText={valuetext}
+                  aria-labelledby="discrete-slider"
+                  valueLabelDisplay="auto"
+                  step={1}
+                  marks
+                  min={1}
+                  max={10}
+                />
+        //console.log(slider.props.getAriaValueText);
+        searchBar = <div id= "round-container">
+                    <TextField id="filled-basic" label="Enter Your Postal Code" variant="filled" onChange={this.savePostal}  />
+                    <button style={{ borderRadius: 50}} className="button" onClick={this.showTable}>
+                        <SearchIcon />
+                    </button>
+                    <h3>Maximum Disance (KM)</h3>
+                    {slider}
+                    </div>;
+      }
       return (
         <div className="home__bg center">
           <div className="con">
@@ -22,37 +150,9 @@ class Map extends React.Component {
             </Link>
           </div>
           <h1>Search For Your Closest Clinic</h1>
-          <div id= "round-container">
-            <TextField id="filled-basic" label="Enter Your Postal Code" variant="filled"  />
-            <button style={{ borderRadius: 50}} className="button">
-                <SearchIcon />
-            </button>
-          </div>
-          <div id = "round-container2">
-            <h2>Closest Clinics to You Are:</h2>
-            <table>
-              <tr>
-                <th>Clinic</th>
-                <th>Location</th>
-                <th>Book An Appointment</th>
-              </tr>
-              <tr>
-                <td><b>Mahfooz Clinic</b></td>
-                <td>123 Bay St</td>
-                <td><button className="bookButton">Book Now</button></td>
-              </tr>
-              <tr>
-                <td><b>Cloud Clinic</b></td>
-                <td>123 Recovery Street</td>
-                <td><button className="bookButton">Book Now</button></td>
-              </tr>
-              <tr>
-                <td><b>Fast Healing Walk-in</b></td>
-                <td>333 close to you St</td>
-                <td><button className="bookButton">Book Now</button></td>
-              </tr>
-          </table>
-          </div>
+          {searchBar}
+
+          {clinicsTable}
         </div>
       );
     }
@@ -61,7 +161,6 @@ class Map extends React.Component {
   export default Map;
 
   /* Next Steps:
-    Add Back to Home Icon
     Only show table once location is put in and search is hit
     Make list of arbirtary acceptable postal codes
     Make list of clinics that have arbritary locations
