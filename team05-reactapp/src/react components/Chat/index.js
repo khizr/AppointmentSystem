@@ -58,7 +58,7 @@ class Chat extends React.Component {
 
 
         <div id="chatbox"> 
-          <h3>What can we help you with?</h3>
+          <h3 className="titles">What can we help you with?</h3>
           <div id="suggestions">
             <span>Popular Requests: </span>
             <button onClick={() => this.sendSuggestion("May I speak to my family doctor please?")}>request doctor</button>
@@ -92,7 +92,7 @@ class Chat extends React.Component {
         
 
         <div id="infoBox">
-          <h3>Contact Information</h3>
+          <h3 className="titles">Contact Information</h3>
 
           <img src="https://img.icons8.com/ios-glyphs/30/000000/secured-letter.png"/>
           <h4>EMAIL</h4>
