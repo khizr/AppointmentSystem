@@ -25,7 +25,7 @@ class AdminLogin extends React.Component {
     
     
     if ( this.state.adminUser === "admin" && this.state.adminPass === "admin") {
-      window.location.href="/";
+      window.location.href="/Admin Home";
     }
 
     if ( this.state.adminUser === "admin") {
@@ -51,7 +51,6 @@ class AdminLogin extends React.Component {
         passError: "true" 
       });
     }
-
 
   };
 
@@ -134,7 +133,6 @@ class AdminLogin extends React.Component {
             onClick={
               this.successfullLogin
             }
-            className="admin_login_button"
             endIcon={<VpnKeyIcon />}>
             Login</Button>
 
@@ -147,13 +145,3 @@ class AdminLogin extends React.Component {
 }
   
   export default AdminLogin;
-
-  /* Next Steps:
-    Add Back to Home Icon
-    Only show table once location is put in and search is hit
-    Make list of arbirtary acceptable postal codes
-    Make list of clinics that have arbritary locations
-    Make table according to increasing distance
-    Allow a search within range limit when searching
-    Book Now button should take you to respective clinics calendar (hamza make user and user bookings table when login)
-    */

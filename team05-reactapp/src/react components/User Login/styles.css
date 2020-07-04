@@ -12,7 +12,7 @@
     transform: translate(-50%, -50%);
   }
 
-  .admin_login {
+  .user_login {
     position: absolute;
     bottom: 15%;
     height: 65%;
@@ -29,7 +29,7 @@
     left: 48%;
     transform: translate(-50%, -50%);
 }
-.admin_user_field_container {
+.user_user_field_container {
     position: absolute;
     width: 85%;
     top: 15%;
@@ -37,7 +37,7 @@
     transform: translate(-50%, -50%);
 }
 
-.admin_pass_field_container {
+.user_pass_field_container {
     position: absolute;
     width: 85%;
     top: 28%;
@@ -45,7 +45,7 @@
     transform: translate(-50%, -50%);
 }
 
-.admin_login_button_container {
+.user_login_button_container {
     position: absolute;
     width: 85%;
     top: 90%;

@@ -13,22 +13,12 @@ import AdminLogin from './react components/Admin Login';
 import UserLogin from './react components/User Login';
 import ClinicRegister from './react components/Clinic Registration';
 import PatientRegister from './react components/Patient Registration';
+import UserHome from './react components/User Home';
+import AdminHome from './react components/Admin Home';
 
 
 
 class App extends React.Component {
-
-  // a 'global' state that you can pass through to any child componenets of App.
-  //   In the Routes below they are passed to both the Home and Queue states.
-//   state = {
-//     abc: "123"
-//   }
-
-  state = {
-    patients: [],
-    clinics:[]
-  }
-
 
   render() {
     return (
@@ -58,7 +48,7 @@ class App extends React.Component {
             </Route>
 
             <Route exact path='/User Login'>
-                <UserLogin state={this.state}/>
+                <UserLogin/>
             </Route>
 
             <Route exact path='/Clinic Registration'>
@@ -68,6 +58,15 @@ class App extends React.Component {
             <Route exact path='/Patient Registration'>
                 <PatientRegister/>
             </Route>
+
+            <Route exact path='/User Home'>
+                <UserHome/>
+            </Route>
+
+            <Route exact path='/Admin Home'>
+                <AdminHome/>
+            </Route>
+
             
           </Switch>
         </BrowserRouter>

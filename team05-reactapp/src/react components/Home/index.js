@@ -8,6 +8,8 @@ import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import Banner from "./static/banner.png"
 import HomeContent from "./../Home Content";
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import styles from "./styles";
 
 // import styles from "./styles"
@@ -17,7 +19,34 @@ import "./styles.css";
 
 class Home extends React.Component {
 
+    state = {
+
+      login: null,
+      register: null
+    }
+
+    handleClick = event => {
+    
+      const target = event.currentTarget;
+      const name = target.name;
+  
+      this.setState({
+        [name]: event.currentTarget
+      });
+  
+  
+    };
+
+    handleClose = () => {
+
+      this.setState({
+        login: null,
+        register:null
+      });
+    }
+
     render() {
+  
       return (
         <div className="home__bg center">
           <img className="home_banner" src={Banner} alt="Banner" />;
@@ -26,7 +55,7 @@ class Home extends React.Component {
             <Button variant="contained"
             color="secondary" 
             style={styles.buttonStyle}
-            className="button"
+            className="button_home"
             endIcon={<EventIcon />}>
             Calendar
             </Button>
@@ -36,7 +65,7 @@ class Home extends React.Component {
             <Button variant="contained"
             color="secondary" 
             style={styles.buttonStyle}
-            className="button"
+            className="button_home"
             endIcon={<ChatIcon />}>
             Chat</Button>
           </Link>
@@ -45,26 +74,65 @@ class Home extends React.Component {
             <Button variant="contained"
             color="secondary" 
             style={styles.buttonStyle}
-            className="button"
+            className="button_home"
             endIcon={<MapIcon />}>
             Clinics Near You</Button>
           </Link>
 
-          <Link className="component__button-link" to={"./../Admin Login"}>
-            <Button variant="contained"
-              color="secondary"
-              style={styles.buttonStyle}
-              className="button_log_reg"
-              endIcon={<VpnKeyIcon />}>
-              Login</Button>
-          </Link>
-
-          <Button variant="contained"
-            color="secondary" 
+          
+          <Button name="login"
+            variant="contained"
+            color="secondary"
             style={styles.buttonStyle}
-            className="button_log_reg"
-            endIcon={<AddCircleIcon />}>
-            Register</Button>    
+            className="button_home_log_reg"
+            onClick={this.handleClick} 
+            endIcon={<VpnKeyIcon />}>  
+            Login</Button>
+
+          <Menu
+            id="simple-menu"
+            anchorEl={this.state.login}
+            keepMounted
+            open={Boolean(this.state.login)}
+            onClose={this.handleClose}
+          >
+            <Link className="component__button-link" to={"./../User Login"}>
+              <MenuItem>User Login</MenuItem>
+            </Link>
+
+            <Link className="component__button-link" to={"./../Admin Login"}>
+              <MenuItem>Admin Login</MenuItem>
+            </Link>
+
+          </Menu>
+
+          
+          <Button name="register"
+          variant="contained"
+          color="secondary" 
+          style={styles.buttonStyle}
+          className="button_home_log_reg"
+          onClick={this.handleClick} 
+          endIcon={<AddCircleIcon />}>
+          Register</Button>
+
+          <Menu
+            id="simple-menu"
+            anchorEl={this.state.register}
+            keepMounted
+            open={Boolean(this.state.register)}
+            onClose={this.handleClose}
+          >
+            <Link className="component__button-link" to={"./../Clinic Registration"}>
+              <MenuItem>New Clinic</MenuItem>
+            </Link>
+
+            <Link className="component__button-link" to={"./../Patient Registration"}>
+              <MenuItem>New Patient</MenuItem>
+            </Link>
+
+          </Menu>
+           
 
         </div>
       );
