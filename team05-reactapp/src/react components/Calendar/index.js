@@ -11,7 +11,7 @@ import HomeIcon from '@material-ui/icons/Home';
 class Calendar extends React.Component {
     render() {
       return (
-        <div className = "backgroundColor">
+        <div>
           <div className="bannerUzi">
             <img className = "myImage" src={Logo} alt="Clinic Logo"></img>
             <span className = "buttonHome">

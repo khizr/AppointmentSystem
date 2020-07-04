@@ -5,12 +5,12 @@
     position: relative;
     color: blue;
   }
+  .bgColor{
+      background: red;
+  }
   .buttonHome{
       background: aqua;
       float:right;
-  }
-  .backgroundColor{
-      background:blue;
   }
     .h2me{
         text-align:center;
@@ -18,8 +18,7 @@
         font-size:1.7em;
     }
   body {
-    color: blue;
-    background-color: white;
+    background: rgb(59, 187, 238);
     margin: 0px;
     font-family: "Helvetica Neue", Helvetica, sans-serif;
   }
