@@ -5,15 +5,11 @@ import SearchIcon from '@material-ui/icons/Search';
 import HomeIcon from '@material-ui/icons/Home';
 import { Link } from "react-router-dom";
 import Slider from '@material-ui/core/Slider';
-import Typography from '@material-ui/core/Typography';
 import "./styles.css";
 
 /* Component for the Map page */
 
 class Clinic extends React.Component{
-  constructor(props) {
-    super(props);
-  }
   changeState = () => {
     this.setState({distance:10})
   }
@@ -32,10 +28,6 @@ class Clinic extends React.Component{
 let clinics = [<Clinic name="Mahfooz Clinic" address="123 Bay St" postal="2" distance="0" />, 
 <Clinic name="Cloud Clinic" address="123 Recovery Street Bay St" postal="6" distance="0"/>,
 <Clinic name="Fast Healing Walk-in" address="333 close to you St" postal="11" distance="0"/>]
-
-function updateDistance(dis){
-  clinics[0].setState({dsitance: dis})
-}
 
 class Table extends React.Component {
   constructor(props) {
@@ -74,11 +66,11 @@ class Table extends React.Component {
 class Map extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {show: false, postal: '', showSearch: true, maxDistance: Number.NEGATIVE_INFINITY};
+      this.state = {show: false, postal: '', showSearch: true, maxDistance: 3};
       this.allowedPostalCodes = ["1","2","3","4","5","6","7","8","9","10"]
     }
-    setMaxDistance = (dis) => {
-      this.setState({maxDistance: dis})
+    reload = () => {
+      window.location.reload();
     }
     showTable = () => {
 
@@ -94,16 +86,16 @@ class Map extends React.Component {
         let lowest = Math.min.apply(Math, sortedClinics)
         let indexClinic = sortedClinics.indexOf(lowest)
         sortedClinics[indexClinic] = Infinity; 
-        console.log(indexClinic)
         let clinic = clinics[indexClinic]
-        if(this.maxDistance > lowest){
+        console.log("max" + this.state.maxDistance)
+        if(this.state.maxDistance >= lowest){
           clinicsCopy[i] = <Clinic name={clinic.props.name} address={clinic.props.address} postal={clinic.props.postal} distance={lowest} />
         }
       }
       clinics = clinicsCopy;
       this.setState({show: true});
       }
-      else if(this.state.postal == ""){
+      else if(this.state.postal === ""){
         alert("Please enter a postal code")
       }
       else{
@@ -120,6 +112,16 @@ class Map extends React.Component {
       let slider;
       if (this.state.show) {
         clinicsTable = <Table postal={this.state.postal}/>;
+        if(clinics.length === 0){
+          clinicsTable = <div>
+          <div id = "round-container2">
+                <h1>No Clinics Found</h1>
+          </div>
+            <button style={{ borderRadius: 50}} className="button" onClick={this.reload}>
+            <h2>Search Again</h2>
+            </button>
+          </div>;
+        }
       };
       if (this.state.showSearch){
         slider = <Slider
@@ -130,7 +132,7 @@ class Map extends React.Component {
                   marks
                   min={1}
                   max={10}
-                  onChange={ (e, val) => this.maxDistance = val } 
+                  onChange={ (e, val) => this.setState({maxDistance:val}) } 
                 />
         
         searchBar = <div id= "round-container">
@@ -166,5 +168,6 @@ class Map extends React.Component {
   export default Map;
 
   /* Next Steps:
-    distance range
+    integrate book now to go to right clinics calendar
+    help hamza and huzaifa with keeping track of user and admin
     */
