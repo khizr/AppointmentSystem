@@ -23,7 +23,7 @@ class Clinic extends React.Component{
         <td><b>{this.props.name}</b></td>
         <td>{this.props.address}</td>
         <td>{this.props.distance} Km</td>
-        <td><button className="bookButton">Book Now</button></td>
+        <td><Link to={"./Calendar"}><button className="bookButton">Book Now</button></Link></td>
       </tr>
     )
   }
@@ -71,15 +71,14 @@ class Table extends React.Component {
   }
 }
 
-function valuetext(value) {
-  return `${value}`;
-}
-
 class Map extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {show: false, postal: '', showSearch: true};
+      this.state = {show: false, postal: '', showSearch: true, maxDistance: Number.NEGATIVE_INFINITY};
       this.allowedPostalCodes = ["1","2","3","4","5","6","7","8","9","10"]
+    }
+    setMaxDistance = (dis) => {
+      this.setState({maxDistance: dis})
     }
     showTable = () => {
 
@@ -97,7 +96,9 @@ class Map extends React.Component {
         sortedClinics[indexClinic] = Infinity; 
         console.log(indexClinic)
         let clinic = clinics[indexClinic]
-        clinicsCopy[i] = <Clinic name={clinic.props.name} address={clinic.props.address} postal={clinic.props.postal} distance={lowest} />
+        if(this.maxDistance > lowest){
+          clinicsCopy[i] = <Clinic name={clinic.props.name} address={clinic.props.address} postal={clinic.props.postal} distance={lowest} />
+        }
       }
       clinics = clinicsCopy;
       this.setState({show: true});
@@ -123,15 +124,15 @@ class Map extends React.Component {
       if (this.state.showSearch){
         slider = <Slider
                   defaultValue={3}
-                  getAriaValueText={valuetext}
                   aria-labelledby="discrete-slider"
                   valueLabelDisplay="auto"
                   step={1}
                   marks
                   min={1}
                   max={10}
+                  onChange={ (e, val) => this.maxDistance = val } 
                 />
-        //console.log(slider.props.getAriaValueText);
+        
         searchBar = <div id= "round-container">
                     <TextField id="filled-basic" label="Enter Your Postal Code" variant="filled" onChange={this.savePostal}  />
                     <button style={{ borderRadius: 50}} className="button" onClick={this.showTable}>
@@ -165,6 +166,5 @@ class Map extends React.Component {
   export default Map;
 
   /* Next Steps:
-    distance from you 
     distance range
     */
