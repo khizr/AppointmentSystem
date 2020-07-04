@@ -101,7 +101,6 @@ class AdminLogin extends React.Component {
             <Button variant="contained"
             color="secondary" 
             style={{ borderRadius: 50}}
-            className="homeButton"
             endIcon={<HomeIcon />}>
             Home</Button>
         </Link>
