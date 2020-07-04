@@ -1,20 +1,77 @@
+
+
 #chatbox {
-	/* Add properties below */
+    /* Add properties below */
+    display: inline-block;
+    float: left;
     position: relative;
     border-radius: 25px;
     height: 600px;
-    width: 600px;
+    width: 50%;
     margin-top: 60px;
     margin-left: 30px;
     margin-right: 30px;
     margin-bottom: 40px;
     background-color: rgb(255, 255, 255);
-    padding-left: 10px;
+    color: black;
+}
+
+#suggestions button {
+    border-radius: 20px;
+    margin: 5px;
+    white-space: normal;
+    max-width: 100px;
+}
+
+#sendButton {
+    border-radius: 20px;
+    margin: 5px;
+    white-space: normal;
+    max-width: 100px;
+}
+
+#infoBox {
+    /* Add properties below */
+    float: right;
+    border-radius: 25px;
+    width: 40%;
+    height: 600px;
+    margin-top: 60px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 40px;
+    background-color: rgb(255, 255, 255);
+    color: black;
+}
+
+#infoBox img {
+    display: inline-block;
+    margin-right: 20px;
+    margin-top: 40px;
+}
+
+#infoBox h4 {
+    display: inline-block
+}
+
+#infoBox span {
+    display: block
+}
+
+#topbar {
+    margin: 20px;
+    display: block;
+}
+
+.homeButton {
+    float: left;
+    display: block;
 }
 
 #messageList {
     float: right;
 }
+
 
 .message {
 	/* Add properties below */
@@ -36,4 +93,9 @@
     border-radius: 25px;
     width: 450px;
     height: 20px;
+}
+
+#main {
+    display: block;
+    
 }
