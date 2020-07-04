@@ -1,9 +1,16 @@
-.banner {
+.bannerUzi {
     height: 100px;
     padding: 20px;
     background-color: aqua;
     position: relative;
-    color:blue;
+    color: blue;
+  }
+  .buttonHome{
+      background: aqua;
+      float:right;
+  }
+  .backgroundColor{
+      background:blue;
   }
     .h2me{
         text-align:center;
@@ -11,7 +18,7 @@
         font-size:1.7em;
     }
   body {
-    color: darkslategrey;
+    color: blue;
     background-color: white;
     margin: 0px;
     font-family: "Helvetica Neue", Helvetica, sans-serif;
@@ -77,6 +84,7 @@
         font-size: 1.5em;
         margin-top: 20px;
         margin-left:170px;
+        color: blue;
     }
     .clinicNumber{
         position:absolute;
@@ -90,4 +98,7 @@
         background: rgb(97, 97, 177);
         margin-bottom: 3px;
         padding: 3px;
+    }
+    .topMarg{
+        margin-top: 20px;
     }

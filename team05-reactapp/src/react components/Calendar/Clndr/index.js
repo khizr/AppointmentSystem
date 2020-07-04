@@ -13,7 +13,8 @@ class Clndr extends React.Component {
             months: ["June", "July", "August", "September", "October", "November", "December"],
             currentMonth: "June",
             currentDay: "1",
-            currentYear: "2020"
+            currentYear: "2020",
+            requestStatus: ""
     };
 }
     setDate = (a) => {
@@ -39,6 +40,10 @@ class Clndr extends React.Component {
             this.setState({currentMonth: newMonth});
             this.setState({currentCalendarMonth: newMonth});
         }
+    }
+
+    request = () => {
+        this.setState({requestStatus: "Appointment request successfully sent."});
     }
 
     render() {
@@ -129,7 +134,8 @@ class Clndr extends React.Component {
             <option value="5.5">5:30PM</option>
             <option value="6">6:00PM</option>
         </select><span> </span>
-        <input type="submit" value="Submit"></input>
+        <input input type="button" onClick={() => this.request()} value="Submit" ></input>
+            <div className = "topMarg">{this.state.requestStatus}</div>
     </form>
         </div>
     </div>
