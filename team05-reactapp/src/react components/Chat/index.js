@@ -43,7 +43,7 @@ class Chat extends React.Component {
 
   render() {
     return (
-      <div id="main">
+      <div className="home__bg centern">
         <div id="topbar">
           <Link to={"./"}>
             <Button variant="contained"
