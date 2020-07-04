@@ -86,15 +86,18 @@ class Map extends React.Component {
         sortedClinics[i] = Math.abs(parseInt(this.state.postal)-parseInt(clinics[i].props.postal))
 
       }
+      let clinicsCopy = [];
       for (let i =0; i < clinics.length; i++){
         let lowest = Math.min.apply(Math, sortedClinics)
         let indexClinic = sortedClinics.indexOf(lowest)
+        sortedClinics[indexClinic] = Infinity; 
         console.log(indexClinic)
-        let first = clinics[0];
-        clinics[0] = clinics[indexClinic];
-        clinics[indexClinic] = first;
-        //console.log("entered");
+        // let first = clinics[0];
+        // clinics[0] = clinics[indexClinic];
+        // clinics[indexClinic] = first;
+       clinicsCopy[i] = clinics[indexClinic]
       }
+      clinics = clinicsCopy;
       this.setState({show: true});
       }
       else if(this.state.postal == ""){
@@ -112,7 +115,6 @@ class Map extends React.Component {
       let clinicsTable;
       let searchBar;
       let slider;
-      let test;
       if (this.state.show) {
         clinicsTable = <Table postal={this.state.postal}/>;
       };
@@ -161,10 +163,7 @@ class Map extends React.Component {
   export default Map;
 
   /* Next Steps:
-    Only show table once location is put in and search is hit
-    Make list of arbirtary acceptable postal codes
-    Make list of clinics that have arbritary locations
-    Make table according to increasing distance
-    Allow a search within range limit when searching
-    Book Now button should take you to respective clinics calendar (hamza make user and user bookings table when login)
+    fix sorter for distance
+    distance from you 
+    distance range
     */
