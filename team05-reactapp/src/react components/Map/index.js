@@ -9,10 +9,10 @@ import Typography from '@material-ui/core/Typography';
 import "./styles.css";
 
 /* Component for the Map page */
+
 class Clinic extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {distance:0};
   }
   changeState = () => {
     this.setState({distance:10})
@@ -22,16 +22,20 @@ class Clinic extends React.Component{
       <tr>
         <td><b>{this.props.name}</b></td>
         <td>{this.props.address}</td>
-        <td>{this.state.distance}</td>
+        <td>{this.props.distance} Km</td>
         <td><button className="bookButton">Book Now</button></td>
       </tr>
     )
   }
 }
 
-let clinics = [<Clinic name="Mahfooz Clinic" address="123 Bay St" postal="2" />, 
-<Clinic name="Cloud Clinic" address="123 Recovery Street Bay St" postal="6" />,
-<Clinic name="Fast Healing Walk-in" address="333 close to you St" postal="11" />]
+let clinics = [<Clinic name="Mahfooz Clinic" address="123 Bay St" postal="2" distance="0" />, 
+<Clinic name="Cloud Clinic" address="123 Recovery Street Bay St" postal="6" distance="0"/>,
+<Clinic name="Fast Healing Walk-in" address="333 close to you St" postal="11" distance="0"/>]
+
+function updateDistance(dis){
+  clinics[0].setState({dsitance: dis})
+}
 
 class Table extends React.Component {
   constructor(props) {
@@ -92,10 +96,8 @@ class Map extends React.Component {
         let indexClinic = sortedClinics.indexOf(lowest)
         sortedClinics[indexClinic] = Infinity; 
         console.log(indexClinic)
-        // let first = clinics[0];
-        // clinics[0] = clinics[indexClinic];
-        // clinics[indexClinic] = first;
-       clinicsCopy[i] = clinics[indexClinic]
+        let clinic = clinics[indexClinic]
+        clinicsCopy[i] = <Clinic name={clinic.props.name} address={clinic.props.address} postal={clinic.props.postal} distance={lowest} />
       }
       clinics = clinicsCopy;
       this.setState({show: true});
@@ -163,7 +165,6 @@ class Map extends React.Component {
   export default Map;
 
   /* Next Steps:
-    fix sorter for distance
     distance from you 
     distance range
     */
