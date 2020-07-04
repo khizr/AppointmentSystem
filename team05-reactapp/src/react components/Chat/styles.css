@@ -21,6 +21,7 @@
     margin: 5px;
     white-space: normal;
     max-width: 100px;
+    background-color: lightgoldenrodyellow;
 }
 
 #sendButton {
@@ -28,6 +29,7 @@
     margin: 5px;
     white-space: normal;
     max-width: 100px;
+    background-color: lightgoldenrodyellow;
 }
 
 #infoBox {
@@ -106,5 +108,10 @@
     background-size: cover;
     width: 100%;
     height: 100%;
-    background-image: url("./background.jpg");
   }
+
+.titles {
+    margin-left: 40px;
+    color: black;
+    text-shadow: none;
+}
