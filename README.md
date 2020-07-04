@@ -1,3 +1,6 @@
 # team05
+# Phase 1 Individual Contributions
 
+Huzaifa: I implemented the Calendar page. On this page there is a calendar from which users looking to book an appointment can select a date on which they wish to book their appointment. On the right hand side a block allows you to select a time on the day selected on the calendar. Here you can select a time and submit a request to schedule an appointment for the given day and time.
 
+Khizr Khan (khannkhi4): I implemented the chat view. On this page the user can view the company's contact information such as phone number and address. The big feature of this page is the ability to communicate with the company through the chat functionality. Users can type in their own questions in the text box and click send to post their message. Additionally, users also have the option to ask ready-made questions without having to type them. Four buttons are available, each representing a frequently asked question. Upon clicking each button, the application will post the message to the chat screen without having the user do any typing. In phase 2, I will add the functionality of receiving messages from the server to allow for communication between the user and the company.
