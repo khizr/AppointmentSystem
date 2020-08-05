@@ -5,9 +5,10 @@ import SearchIcon from '@material-ui/icons/Search';
 import HomeIcon from '@material-ui/icons/Home';
 import { Link } from "react-router-dom";
 import Slider from '@material-ui/core/Slider';
+import { Map, GoogleApiWrapper } from 'google-maps-react';
 import "./styles.css";
 
-/* Component for the Map page */
+/* Component for the StoresNearYou page */
 
 class Clinic extends React.Component{
   changeState = () => {
@@ -63,7 +64,7 @@ class Table extends React.Component {
   }
 }
 
-class Map extends React.Component {
+class StoresNearYou extends React.Component {
     constructor(props) {
       super(props);
       this.state = {show: false, postal: '', showSearch: true, maxDistance: 3};
@@ -110,6 +111,7 @@ class Map extends React.Component {
       let clinicsTable;
       let searchBar;
       let slider;
+
       if (this.state.show) {
         clinicsTable = <Table postal={this.state.postal}/>;
         if(clinics.length === 0){
@@ -160,12 +162,18 @@ class Map extends React.Component {
           {searchBar}
 
           {clinicsTable}
+
+          <Map
+          google={this.props.google}
+          zoom={8}
+          initialCenter={{ lat: 47.444, lng: -122.176}}
+          />
         </div>
       );
     }
   }
   
-  export default Map;
+  export default StoresNearYou;
 
   /* Next Steps:
     integrate book now to go to right clinics calendar

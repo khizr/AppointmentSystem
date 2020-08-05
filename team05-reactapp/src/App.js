@@ -8,7 +8,7 @@ import './App.css';
 import Home from './react components/Home';
 import Calendar from './react components/Calendar';
 import Chat from './react components/Chat';
-import Map from './react components/Map';
+import StoresNearYou from './react components/StoresNearYou';
 import AdminLogin from './react components/Admin Login';
 import UserLogin from './react components/User Login';
 import ClinicRegister from './react components/Clinic Registration';
@@ -34,8 +34,8 @@ class App extends React.Component {
                 <Calendar/>
             </Route>
 
-            <Route exact path='/Map'>
-                <Map/>
+            <Route exact path='/StoresNearYou'>
+                <StoresNearYou/>
             </Route>
 
             <Route exact path='/Chat'>

@@ -42,7 +42,7 @@ class AdminHome extends React.Component {
             Chat</Button>
           </Link>
 
-          <Link className="component__button-link" to={"./../Map"}>
+          <Link className="component__button-link" to={"./../StoresNearYou"}>
             <Button variant="contained"
             color="secondary" 
             style={styles.buttonStyle}
