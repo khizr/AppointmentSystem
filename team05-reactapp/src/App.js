@@ -16,63 +16,82 @@ import PatientRegister from './react components/Patient Registration';
 import UserHome from './react components/User Home';
 import AdminHome from './react components/Admin Home';
 
+// import { readCookie } from "./actions/user";
+
 
 
 class App extends React.Component {
 
-  render() {
-    return (
-        <div>
-        <BrowserRouter>
-          <Switch> { /* Similar to a switch statement - shows the component depending on the URL path */ }
-            { /* Each Route below shows a different component depending on the exact path in the URL  */ }
-            <Route exact path='/'> 
-                <Home/>
-            </Route>
+    constructor(props) {
+        super(props);
+        // readCookie(this); // sees if a user is logged in.
+    }
 
-            <Route exact path='/Calendar'>
-                <Calendar/>
-            </Route>
+    // global state passed down includes the current logged in user.
+    state = {
+        currentUser: null
+    }
 
-            <Route exact path='/StoresNearYou'>
-                <StoresNearYou/>
-            </Route>
+    render() {
 
-            <Route exact path='/Chat'>
-                <Chat/>
-            </Route>
+        return (
+            <div>
+            <BrowserRouter>
+            <Switch> { /* Similar to a switch statement - shows the component depending on the URL path */ }
+                { /* Each Route below shows a different component depending on the exact path in the URL  */ }
+                <Route
+                        exact path={["/"] /* any of these URLs are accepted. */ }
+                        render={({ history }) => (
+                            <div>
+                                <Home/>
+                            </div>
+                            
+                        )}
+                />
 
-            
-            <Route exact path='/Admin Login'>
-                <AdminLogin/>
-            </Route>
+                <Route exact path='/Calendar'>
+                    <Calendar/>
+                </Route>
 
-            <Route exact path='/User Login'>
-                <UserLogin/>
-            </Route>
+                <Route exact path='/StoresNearYou'>
+                    <StoresNearYou/>
+                </Route>
 
-            <Route exact path='/Clinic Registration'>
-                <ClinicRegister/>
-            </Route>
+                <Route exact path='/Chat'>
+                    <Chat/>
+                </Route>
 
-            <Route exact path='/Patient Registration'>
-                <PatientRegister/>
-            </Route>
+                
+                <Route exact path='/Admin Login'>
+                    <AdminLogin/>
+                </Route>
 
-            <Route exact path='/User Home'>
-                <UserHome/>
-            </Route>
+                <Route exact path='/User Login'>
+                    <UserLogin/>
+                </Route>
 
-            <Route exact path='/Admin Home'>
-                <AdminHome/>
-            </Route>
+                <Route exact path='/Clinic Registration'>
+                    <ClinicRegister/>
+                </Route>
 
-            
-          </Switch>
-        </BrowserRouter>
-      </div>
-    );  
-  }
+                <Route exact path='/Patient Registration'>
+                    <PatientRegister/>
+                </Route>
+
+                <Route exact path='/User Home'>
+                    <UserHome/>
+                </Route>
+
+                <Route exact path='/Admin Home'>
+                    <AdminHome/>
+                </Route>
+
+                
+            </Switch>
+            </BrowserRouter>
+        </div>
+        );  
+    }
 }
 
 export default App;
