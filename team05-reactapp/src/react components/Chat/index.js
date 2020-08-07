@@ -35,12 +35,14 @@ class Chat extends React.Component {
       sentMessages: messageList
     })
 
+    console.log("got heeere")
+
     const url = '/message';
 
     let data = {
       name: message
     }
-
+    console.log('created req')
     const request = new Request(url, {
       method: 'post', 
       body: JSON.stringify(data),
@@ -52,7 +54,7 @@ class Chat extends React.Component {
 
     fetch(request)
     .then(function(res) {
-
+        console.log('msg')
         // Handle response we get from the API.
         // Usually check the error codes to see what happened.
         if (res.status === 200) {
@@ -71,7 +73,7 @@ class Chat extends React.Component {
         console.log(error)
     })
 
-    console.log("got here")
+
 
   }
 
