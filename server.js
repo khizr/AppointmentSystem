@@ -11,7 +11,7 @@ const { mongoose } = require("./db/mongoose");
 mongoose.set('useFindAndModify', false); // for some deprecation issues
 
 // import the mongoose models
-const { Student } = require("./models/student");
+const { CalendarBooking } = require("./models/clndrBookingModel");
 const { User } = require("./models/user");
 const { Message } = require("./models/message");
 
@@ -81,6 +81,33 @@ app.get("/users/check-session", (req, res) => {
         res.status(401).send();
     }
 });
+
+// A route to book an appointment for a specific date/time
+app.post("/Calendar", (req, res) => {
+    //mongoose connection ready check
+    if (mongoose.connection.readyState != 1) {
+		log('Issue with mongoose connection')
+		res.status(500).send('Internal server error')
+		return;
+    }
+    const booking = new CalendarBooking({
+		clinicName: req.body.clinicName,
+        month: req.body.month,
+        day: req.body.day,
+        year: req.body.year,
+        username: req.body.username
+	})
+    booking.save().then((result) => {
+		res.send(result)
+	}).catch((error) => {
+		if (isMongoError(error)) { // check for if mongo server suddenly dissconnected before this request.
+			res.status(500).send('Internal server error')
+		} else {
+			log(error) // log server error to the console, not to the client.
+			res.status(400).send('Bad Request') // 400 for bad request gets sent to client.
+		}
+	})
+})
 
 /*********************************************************/
 
