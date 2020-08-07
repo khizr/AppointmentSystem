@@ -13,6 +13,7 @@ mongoose.set('useFindAndModify', false); // for some deprecation issues
 // import the mongoose models
 const { Student } = require("./models/student");
 const { User } = require("./models/user");
+const { Message } = require("./models/message");
 
 // to validate object IDs
 const { ObjectID } = require("mongodb");
@@ -225,6 +226,39 @@ app.post("/users", (req, res) => {
         }
     );
 });
+
+app.post('/message', (req, res) => {
+	// log(req.body)
+
+	// check mongoose connection established.
+	if (mongoose.connection.readyState != 1) {
+		log('Issue with mongoose connection')
+		res.status(500).send('Internal server error')
+		return;
+	}  
+
+	// Create a new student using the Student mongoose model
+	const message = new Message({
+		text: req.body.text
+	})
+
+
+	// Save student to the database
+	message.save().then((result) => {
+        res.send(result)
+        console.log("sent")
+	}).catch((error) => {
+		if (isMongoError(error)) { // check for if mongo server suddenly dissconnected before this request.
+			res.status(500).send('Internal server error')
+		} else {
+			log(error) // log server error to the console, not to the client.
+			res.status(400).send('Bad Request') // 400 for bad request gets sent to client.
+		}
+	})
+})
+
+
+
 
 /*** Webpage routes below **********************************/
 // Serve the build
