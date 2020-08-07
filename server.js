@@ -84,6 +84,7 @@ app.get("/users/check-session", (req, res) => {
 
 // A route to book an appointment for a specific date/time
 app.post("/Calendar", (req, res) => {
+    log(req.body)
     //mongoose connection ready check
     if (mongoose.connection.readyState != 1) {
 		log('Issue with mongoose connection')
