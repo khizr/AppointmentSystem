@@ -16,7 +16,7 @@ import PatientRegister from './react components/Patient Registration';
 import UserHome from './react components/User Home';
 import AdminHome from './react components/Admin Home';
 
-// import { readCookie } from "./actions/user";
+import { readCookie } from "./actions/user";
 
 
 
@@ -24,7 +24,7 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        // readCookie(this); // sees if a user is logged in.
+        readCookie(this); // sees if a user is logged in.
     }
 
     // global state passed down includes the current logged in user.
@@ -34,6 +34,8 @@ class App extends React.Component {
 
     render() {
 
+        const { currentUser } = this.state;
+
         return (
             <div>
             <BrowserRouter>
@@ -42,8 +44,9 @@ class App extends React.Component {
                 <Route
                         exact path={["/"] /* any of these URLs are accepted. */ }
                         render={({ history }) => (
-                            <div>
-                                <Home/>
+                            <div className="app">
+                                { /* Different componenets rendered depending on if someone is logged in. */}
+                                {!currentUser ? <Home history={history} app={this} /> : <UserLogin history={history} app={this} />}
                             </div>
                             
                         )}

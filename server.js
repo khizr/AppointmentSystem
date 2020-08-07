@@ -34,7 +34,7 @@ app.use(
         resave: false,
         saveUninitialized: false,
         cookie: {
-            expires: 60000,
+            expires: 600000,
             httpOnly: true
         }
     })
@@ -42,19 +42,19 @@ app.use(
 
 // A route to login and create a session
 app.post("/users/login", (req, res) => {
-    const email = req.body.email;
+    const username = req.body.username;
     const password = req.body.password;
 
-    log(email, password);
+    log(username, password);
     // Use the static method on the User model to find a user
     // by their email and password
-    User.findByEmailPassword(email, password)
+    User.findByUserNamePassword(username, password)
         .then(user => {
             // Add the user's id to the session cookie.
             // We can check later if this exists to ensure we are logged in.
             req.session.user = user._id;
             req.session.email = user.email;
-            res.send({ currentUser: user.email });
+            res.send({ currentUser: user.username });
         })
         .catch(error => {
             res.status(400).send()
@@ -62,25 +62,25 @@ app.post("/users/login", (req, res) => {
 });
 
 // // A route to logout a user
-// app.get("/users/logout", (req, res) => {
-//     // Remove the session
-//     req.session.destroy(error => {
-//         if (error) {
-//             res.status(500).send(error);
-//         } else {
-//             res.send()
-//         }
-//     });
-// });
+app.get("/users/logout", (req, res) => {
+    // Remove the session
+    req.session.destroy(error => {
+        if (error) {
+            res.status(500).send(error);
+        } else {
+            res.send()
+        }
+    });
+});
 
 // // A route to check if a use is logged in on the session cookie
-// app.get("/users/check-session", (req, res) => {
-//     if (req.session.user) {
-//         res.send({ currentUser: req.session.email });
-//     } else {
-//         res.status(401).send();
-//     }
-// });
+app.get("/users/check-session", (req, res) => {
+    if (req.session.user) {
+        res.send({ currentUser: req.session.username });
+    } else {
+        res.status(401).send();
+    }
+});
 
 /*********************************************************/
 
@@ -207,12 +207,12 @@ app.post("/users/login", (req, res) => {
 
 /** User routes below **/
 // Set up a POST route to *create* a user of your web app (*not* a student).
-app.post("/users", (req, res) => {
+app.post("/users/login", (req, res) => {
     log(req.body);
 
     // Create a new user
     const user = new User({
-        email: req.body.email,
+        username: req.body.username,
         password: req.body.password
     });
 
