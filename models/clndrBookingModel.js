@@ -10,14 +10,18 @@ const CalendarBooking = mongoose.model('CalendarBooking', {
 	},
 	month: {
 		type: String,
-		required: true,
+		required: true
     },
     day: {
         type: String,
-		required: true,
+		required: true
+    },
+    time: {
+        type: String,
+        required: true
     },
     year: {
-        type: Number,
+        type: String,
         required: true
     },
     username: {

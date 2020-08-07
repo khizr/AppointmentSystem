@@ -95,6 +95,7 @@ app.post("/Calendar", (req, res) => {
 		clinicName: req.body.clinicName,
         month: req.body.month,
         day: req.body.day,
+        time: req.body.time,
         year: req.body.year,
         username: req.body.username
 	})
@@ -107,6 +108,25 @@ app.post("/Calendar", (req, res) => {
 			log(error) // log server error to the console, not to the client.
 			res.status(400).send('Bad Request') // 400 for bad request gets sent to client.
 		}
+	})
+})
+
+// A route to get list of appointments for a specific user
+app.get('/Calendar', (req, res) => {
+
+	// check mongoose connection established.
+	if (mongoose.connection.readyState != 1) {
+		log('Issue with mongoose connection')
+		res.status(500).send('Internal server error')
+		return;
+	} 
+
+	CalendarBooking.find().then((bookings) => {
+		res.send({ bookings }) // can wrap students in object if want to add more properties
+	})
+	.catch((error) => {
+		log(error)
+		res.status(500).send("Internal Server Error")
 	})
 })
 
