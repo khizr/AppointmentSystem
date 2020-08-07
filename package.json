@@ -1,5 +1,5 @@
 {
-    "name": "cloud_clinics",
+    "name": "cloud_clinics_server",
     "version": "1.0.0",
     "description": "",
     "main": "server.js",
@@ -7,10 +7,10 @@
         "node": "12.18.0"
       },
     "scripts": {
-        "setup": "npm install && cd client && npm install && cd ..",
-        "build-run": "cd client && npm run build && cd .. && node server.js",
+        "setup": "npm install && cd team05-reactapp && npm install && cd ..",
+        "build-run": "cd team05-reactapp && npm run build && cd .. && node server.js",
         "start": "node server.js",
-        "heroku-postbuild": "cd client && npm install && npm run build",
+        "heroku-postbuild": "cd team05-reactapp && npm install && npm run build",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "",
