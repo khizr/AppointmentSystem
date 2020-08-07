@@ -8,66 +8,83 @@ import Banner from "./static/banner.png"
 import { Link } from "react-router-dom";
 import "./styles.css";
 
+import { updateLoginForm, login } from "../../actions/user";
+
 /* Component for the Map page */
 class userLogin extends React.Component {
 
-  state = {
-    userUser: "",
-    userPass: "",
-    incorrectUser: "",
-    incorrectPass:"",
-    userError: "",
-    passError:"",
-    displayHelp: ""
+  // state = {
+  //   userUser: "",
+  //   userPass: "",
+  //   incorrectUser: "",
+  //   incorrectPass:"",
+  //   userError: "",
+  //   passError:"",
+  //   displayHelp: ""
+  // }
+
+  // successfullLogin = () => {
+    
+    
+  //   if ( (this.state.userUser === "user" && this.state.userPass === "user") |  (this.state.userUser === "user2" && this.state.userPass === "user2") ) {
+  //     window.location.href="./../User Home";
+  //   }
+
+  //   if ( this.state.userUser === "user" | this.state.userUser === "user2") {
+  //     this.setState({
+  //       userError: "false" 
+  //     });
+  //   }
+
+  //   if ( this.state.userPass === "user" | this.state.userUser === "user2") {
+  //     this.setState({
+  //       passError: "false" 
+  //     });
+  //   }
+
+  //   if ( this.state.userUser !== "user" && this.state.userUser !== "user2") {
+  //     this.setState({
+  //       userError: "true" 
+  //     });
+  //   }
+
+  //   if ( this.state.userPass !== "user" && this.state.userUser !== "user2") {
+  //     this.setState({
+  //       passError: "true" 
+  //     });
+  //   }
+
+  // };
+
+  // handleInputChange = event => {
+    
+  //   const target = event.target;
+  //   const value = target.value;
+  //   const name = target.name;
+
+  //   this.setState({
+  //     [name]: value
+  //   });
+
+
+  // };
+
+  constructor(props) {
+    super(props);
+    this.props.history.push("/login");
   }
 
-  successfullLogin = () => {
-    
-    
-    if ( (this.state.userUser === "user" && this.state.userPass === "user") |  (this.state.userUser === "user2" && this.state.userPass === "user2") ) {
-      window.location.href="./../User Home";
-    }
+  // login form state
+  state = {
+    email: "",
+    password: ""
+  }
 
-    if ( this.state.userUser === "user" | this.state.userUser === "user2") {
-      this.setState({
-        userError: "false" 
-      });
-    }
-
-    if ( this.state.userPass === "user" | this.state.userUser === "user2") {
-      this.setState({
-        passError: "false" 
-      });
-    }
-
-    if ( this.state.userUser !== "user" && this.state.userUser !== "user2") {
-      this.setState({
-        userError: "true" 
-      });
-    }
-
-    if ( this.state.userPass !== "user" && this.state.userUser !== "user2") {
-      this.setState({
-        passError: "true" 
-      });
-    }
-
-  };
-
-  handleInputChange = event => {
-    
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value
-    });
-
-
-  };
 
   render() {
+
+    const { app } = this.props
+
     return (
       <div className="home__bg center">
         <Link className="component__button-link" to={"./"}>
@@ -96,9 +113,10 @@ class userLogin extends React.Component {
               label="Username" 
               variant="filled" 
               fullWidth
-              onChange={this.handleInputChange}
-              error={this.state.userError === "true"}
-              helperText={this.state.userError === "true" ? 'Incorrect Username' : ''}
+              onChange={e => updateLoginForm(this, e.target)}
+              // onChange={this.handleInputChange}
+              // error={this.state.userError === "true"}
+              // helperText={this.state.userError === "true" ? 'Incorrect Username' : ''}
               />
 
             </form>
@@ -115,9 +133,10 @@ class userLogin extends React.Component {
               label="Password" 
               variant="filled" 
               fullWidth
-              onChange={this.handleInputChange}
-              error={this.state.passError === "true"}
-              helperText={this.state.passError === "true" ? 'Incorrect Password' : ''}
+              onChange={e => updateLoginForm(this, e.target)}
+              // onChange={this.handleInputChange}
+              // error={this.state.passError === "true"}
+              // helperText={this.state.passError === "true" ? 'Incorrect Password' : ''}
               />
               
 
@@ -129,9 +148,10 @@ class userLogin extends React.Component {
             <Button variant="contained"
             color="secondary" 
             fullWidth
-            onClick={
-              this.successfullLogin
-            }
+            onClick={() => login(this, app)}
+            // onClick={
+            //   this.successfullLogin
+            // }
             endIcon={<VpnKeyIcon />}>
             Login</Button>
 
