@@ -12,6 +12,7 @@ mongoose.set('useFindAndModify', false); // for some deprecation issues
 
 // import the mongoose models
 const { Patient } = require("./models/patients");
+const { CalendarBooking } = require("./models/clndrBookingModel");
 const { Message } = require("./models/message");
 const { Clinic } = require("./models/clinics");
 
@@ -110,6 +111,54 @@ app.get("/patients/check-session", (req, res) => {
         res.status(401).send();
     }
 });
+
+// A route to book an appointment for a specific date/time
+app.post("/Calendar", (req, res) => {
+    log(req.body)
+    //mongoose connection ready check
+    if (mongoose.connection.readyState != 1) {
+		log('Issue with mongoose connection')
+		res.status(500).send('Internal server error')
+		return;
+    }
+    const booking = new CalendarBooking({
+		clinicName: req.body.clinicName,
+        month: req.body.month,
+        day: req.body.day,
+        time: req.body.time,
+        year: req.body.year,
+        username: req.body.username
+	})
+    booking.save().then((result) => {
+		res.send(result)
+	}).catch((error) => {
+		if (isMongoError(error)) { // check for if mongo server suddenly dissconnected before this request.
+			res.status(500).send('Internal server error')
+		} else {
+			log(error) // log server error to the console, not to the client.
+			res.status(400).send('Bad Request') // 400 for bad request gets sent to client.
+		}
+	})
+})
+
+// A route to get list of appointments for a specific user
+app.get('/Calendar', (req, res) => {
+
+	// check mongoose connection established.
+	if (mongoose.connection.readyState != 1) {
+		log('Issue with mongoose connection')
+		res.status(500).send('Internal server error')
+		return;
+	} 
+
+	CalendarBooking.find().then((bookings) => {
+		res.send({ bookings }) // can wrap students in object if want to add more properties
+	})
+	.catch((error) => {
+		log(error)
+		res.status(500).send("Internal Server Error")
+	})
+})
 
 
 /** Clinic routes below **/
