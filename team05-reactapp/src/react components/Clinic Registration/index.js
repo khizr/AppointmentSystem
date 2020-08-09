@@ -7,100 +7,116 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { Link } from "react-router-dom";
 import "./styles.css";
 
+import { updateForm, register } from "../../actions/clinic";
+
 /* Component for the Map page */
 
-class AdminLogin extends React.Component {
+class ClinicRegister extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.props.history.push("/registerclinic");
+    this.repeatPass = "";
+    this.userRegex = /^user(?!1\b)\d*[13579]$/
+  }
+
+  // register form state
   state = {
-    clinicUser: "",
-    clinicPass: "",
-    clinicRepeatPass:"",
-    userError: "",
-    passError:"",
-    reapeatPassError:"",
-    displayHelp: ""
+    username: "",
+    password: ""
   }
 
-  successfullRegister = () => {
-    
-    
-    if ( this.state.clinicUser === "user" && this.state.clinicPass === "user" && this.state.clinicRepeatPass === "user") {
-
-      this.sucessfullRegister();
-      setInterval(this.changeWindow, 4000);
-
-    }
-
-    if ( this.state.clinicUser === "user") {
-      this.setState({
-        userError: "false" 
-      });
-    }
-
-    if ( this.state.clinicPass === "user") {
-      this.setState({
-        passError: "false" 
-      });
-    }
-
-    if ( this.state.clinicRepeatPass === "user") {
-      this.setState({
-        repeatPassError: "false" 
-      });
-    }
-
-    if ( this.state.clinicUser !== "user") {
-      this.setState({
-        userError: "true" 
-      });
-    }
-
-    if ( this.state.clinicPass !== "user") {
-      this.setState({
-        passError: "true" 
-      });
-    }
-
-    if ( this.state.clinicRepeatPass !== "user") {
-      this.setState({
-        repeatPassError: "true" 
-      });
-    }
-
-  };
-
-  sucessfullRegister = () => {
-
-    alert("You have sucessfully registered! You will be redirected to the homepage in 5 seconds or press OK to be redirected immediately.");
-    window.location.href="/";
+  // Pushes home link into prop, redirects page to home
+  goHome = () => {
+    this.props.history.push("/");
   }
 
-  changeWindow = () => {
-    window.location.href="/";
-  }
-
-  handleInputChange = event => {
+  // Sets the repeat pass in the registration form
+  setRepeatPass = event => {
     
     const target = event.target;
     const value = target.value;
-    const name = target.name;
 
-    this.setState({
-      [name]: value
-    });
+    this.repeatPass = value;
 
   };
 
+  // Checks for sucessfull registration
+  successfullRegister = (app) => {
+
+    // Username does not follow format
+    if (!this.userRegex.test(this.state.username)) {
+      app.setState({
+        userFormatError: "true"
+      })
+    }
+    else {
+      app.setState({
+        userFormatError: "false"
+      })
+    }
+
+    // if username does not match password, set password error to true, else set the error to false
+    if (this.state.username !== this.state.password) {
+      app.setState({
+        passwordError:"true"
+      })
+    }
+    else {
+      app.setState({
+        passwordError:"false"
+      })
+    }
+
+    // If new password does not match the repeated password, set repeat password error to true, else set the error to false
+    if (this.state.password !== this.repeatPass) {
+      app.setState({
+        repeatPassError:"true"
+      })
+    }
+    else {
+      app.setState({
+        repeatPassError:"false"
+      })
+    }
+
+    // If all fields are correctly filled out, then send a registration request to the server
+    if (this.userRegex.test(this.state.username) && this.state.username === this.state.password && this.state.password === this.repeatPass) {
+      register(this, app);
+    }
+
+    setTimeout( () => {
+
+      if (app.state.successfullRegister == "true") {
+
+        app.setState({
+          successfullRegister:"false"
+        })
+        
+       
+        alert("Registration Successfull! Press OK to be redirected to the home page.")
+
+        this.goHome();
+  
+      }
+
+    }, 500)
+
+  }
+
   render() {
+
+    const { app } = this.props
+
     return (
       <div className="home__bg center">
-        <Link className="component__button-link" to={"./"}>
-            <Button variant="contained"
-            color="secondary" 
-            style={{ borderRadius: 50}}
-            endIcon={<HomeIcon />}>
-            Home</Button>
-        </Link>
+
+        <Button variant="contained"
+          color="secondary" 
+          style={{ borderRadius: 50}}
+          onClick={this.goHome}
+          endIcon={<HomeIcon />}>
+          Home</Button>
 
         <div className="clinic_register_container"><h1 className="clinic_register_header">Create a New Account</h1></div>
 
@@ -156,14 +172,15 @@ class AdminLogin extends React.Component {
             <form noValidate autoComplete="off">
 
               <TextField 
-              name="clinicUser"
+              name="username"
               id="filled-basic" 
               label="Username" 
               variant="filled" 
               fullWidth
-              onChange={this.handleInputChange}
-              error={this.state.userError === "true"}
-              helperText={this.state.userError === "true" ? 'Your Username Should Be user' : ''}
+              onChange={e => updateForm(this, e.target)}
+              error={app.state.usernameError === "true" || app.state.userFormatError === "true"}
+              helperText={app.state.usernameError === "true" ? 'Username already exists' : '' || 
+              app.state.userFormatError === "true" ? 'Username should be of format user<positive odd number starting at 3>' : ''}
               />
 
             </form>
@@ -175,14 +192,14 @@ class AdminLogin extends React.Component {
             <form noValidate autoComplete="off">
 
               <TextField
-              name="clinicPass" 
+              name="password" 
               id="filled-basic"
               label="New Password" 
               variant="filled" 
               fullWidth
-              onChange={this.handleInputChange}
-              error={this.state.passError === "true"}
-              helperText={this.state.passError === "true" ? 'Your Password should be user' : ''}
+              onChange={e => updateForm(this, e.target)}
+              error={app.state.passwordError === "true"}
+              helperText={app.state.passwordError === "true" ? 'Password does not match username' : ''}
               />
               
 
@@ -200,12 +217,11 @@ class AdminLogin extends React.Component {
               label="Repeat Password" 
               variant="filled" 
               fullWidth
-              onChange={this.handleInputChange}
-              error={this.state.repeatPassError === "true"}
-              helperText={this.state.repeatPassError === "true" ? 'Your Password should be user' : ''}
+              onChange={this.setRepeatPass}
+              error={app.state.repeatPassError === "true"}
+              helperText={app.state.repeatPassError === "true" ? 'Password does not match new password' : ''}
               />
               
-
             </form>
 
           </div>
@@ -214,9 +230,7 @@ class AdminLogin extends React.Component {
             <Button variant="contained"
             color="secondary" 
             fullWidth
-            onClick={
-              this.successfullRegister
-            }
+            onClick={() => this.successfullRegister(app)}
             endIcon={<AddCircleIcon />}>
             Register</Button>
 
@@ -228,4 +242,4 @@ class AdminLogin extends React.Component {
   }
 }
   
-  export default AdminLogin;
+  export default ClinicRegister;

@@ -11,9 +11,9 @@ const { mongoose } = require("./db/mongoose");
 mongoose.set('useFindAndModify', false); // for some deprecation issues
 
 // import the mongoose models
-const { Student } = require("./models/student");
-const { User } = require("./models/user");
+const { Patient } = require("./models/patients");
 const { Message } = require("./models/message");
+const { Clinic } = require("./models/clinics");
 
 // to validate object IDs
 const { ObjectID } = require("mongodb");
@@ -34,35 +34,64 @@ app.use(
         resave: false,
         saveUninitialized: false,
         cookie: {
-            expires: 600000,
+            expires: 60000,
             httpOnly: true
         }
     })
 );
 
+
+/** Patient routes below **/
+// Set up a POST route to create a patient user
+app.post("/patients/register", (req, res) => {
+
+    // Create a new user
+    const patient = new Patient({
+        username: req.body.username,
+        password: req.body.password
+    });
+
+    Patient.findByUserName(patient.username)
+    .then( () => {
+
+        // Save the patient
+        patient.save()
+        .then(patient => {
+            res.send(patient);
+        })
+        .catch(error => {
+            res.status(400).send(error); // 400 for bad request
+        });
+
+    })
+    .catch( () => {
+        res.status(406).send()   
+    });
+    
+});
+
 // A route to login and create a session
-app.post("/users/login", (req, res) => {
+app.post("/patients/login", (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
-    log(username, password);
-    // Use the static method on the User model to find a user
+    // Use the static method on the Patient model to find a patient
     // by their email and password
-    User.findByUserNamePassword(username, password)
-        .then(user => {
-            // Add the user's id to the session cookie.
+    Patient.findByUserNamePassword(username, password)
+        .then(patient => {
+            // Add the patient's id to the session cookie.
             // We can check later if this exists to ensure we are logged in.
-            req.session.user = user._id;
-            req.session.email = user.email;
-            res.send({ currentUser: user.username });
+            req.session.patient = patient._id;
+            req.session.username = patient.username;
+            res.send({ currentUser: patient.username });
         })
         .catch(error => {
-            res.status(400).send()
+            error  === 'Username Not Found' ? res.status(400).send() : res.status(406).send()   
         });
 });
 
-// // A route to logout a user
-app.get("/users/logout", (req, res) => {
+// // A route to logout a patient
+app.get("/patients/logout", (req, res) => {
     // Remove the session
     req.session.destroy(error => {
         if (error) {
@@ -73,160 +102,87 @@ app.get("/users/logout", (req, res) => {
     });
 });
 
-// // A route to check if a use is logged in on the session cookie
-app.get("/users/check-session", (req, res) => {
-    if (req.session.user) {
+// // A route to check if a patient is logged in on the session cookie
+app.get("/patients/check-session", (req, res) => {
+    if (req.session.patient) {
         res.send({ currentUser: req.session.username });
     } else {
         res.status(401).send();
     }
 });
 
-/*********************************************************/
 
-/*** API Routes below ************************************/
-// NOTE: The JSON routes (/students) are not protected in this react server (no authentication required). 
-//       You can (and should!) add this using similar middleware techniques we used in lecture.
+/** Clinic routes below **/
+// Set up a POST route to create a clinic user
+app.post("/clinics/register", (req, res) => {
 
-/** Student resource routes **/
-// a POST route to *create* a student
-// app.post("/students", (req, res) => {
-//     // log(req.body)
-
-//     // Create a new student using the Student mongoose model
-//     const student = new Student({
-//         name: req.body.name,
-//         year: req.body.year
-//     });
-
-//     // Save student to the database
-//     student.save().then(
-//         result => {
-//             res.send(result);
-//         },
-//         error => {
-//             res.status(400).send(error); // 400 for bad request
-//         }
-//     );
-// });
-
-// a GET route to get all students
-// app.get("/students", (req, res) => {
-//     Student.find().then(
-//         students => {
-//             log();
-//             res.send({ students }); // can wrap in object if want to add more properties
-//         },
-//         error => {
-//             res.status(500).send(error); // server error
-//         }
-//     );
-// });
-
-// /// a GET route to get a student by their id.
-// // id is treated as a wildcard parameter, which is why there is a colon : beside it.
-// // (in this case, the database id, but you can make your own id system for your project)
-// app.get("/students/:id", (req, res) => {
-//     /// req.params has the wildcard parameters in the url, in this case, id.
-//     // log(req.params.id)
-//     const id = req.params.id;
-
-//     // Good practise: Validate id immediately.
-//     if (!ObjectID.isValid(id)) {
-//         res.status(404).send(); // if invalid id, definitely can't find resource, 404.
-//         return;
-//     }
-
-//     // Otherwise, findById
-//     Student.findById(id)
-//         .then(student => {
-//             if (!student) {
-//                 res.status(404).send(); // could not find this student
-//             } else {
-//                 /// sometimes we wrap returned object in another object:
-//                 //res.send({student})
-//                 res.send(student);
-//             }
-//         })
-//         .catch(error => {
-//             res.status(500).send(); // server error
-//         });
-// });
-
-// /// a DELETE route to remove a student by their id.
-// app.delete("/students/:id", (req, res) => {
-//     const id = req.params.id;
-
-//     // Validate id
-//     if (!ObjectID.isValid(id)) {
-//         res.status(404).send();
-//         return;
-//     }
-
-//     // Delete a student by their id
-//     Student.findByIdAndRemove(id)
-//         .then(student => {
-//             if (!student) {
-//                 res.status(404).send();
-//             } else {
-//                 res.send(student);
-//             }
-//         })
-//         .catch(error => {
-//             res.status(500).send(); // server error, could not delete.
-//         });
-// });
-
-// // a PATCH route for changing properties of a resource.
-// // (alternatively, a PUT is used more often for replacing entire resources).
-// app.patch("/students/:id", (req, res) => {
-//     const id = req.params.id;
-
-//     // get the updated name and year only from the request body.
-//     const { name, year } = req.body;
-//     const body = { name, year };
-
-//     if (!ObjectID.isValid(id)) {
-//         res.status(404).send();
-//         return;
-//     }
-
-//     // Update the student by their id.
-//     Student.findByIdAndUpdate(id, { $set: body }, { new: true })
-//         .then(student => {
-//             if (!student) {
-//                 res.status(404).send();
-//             } else {
-//                 res.send(student);
-//             }
-//         })
-//         .catch(error => {
-//             res.status(400).send(); // bad request for changing the student.
-//         });
-// });
-
-/** User routes below **/
-// Set up a POST route to *create* a user of your web app (*not* a student).
-app.post("/users/login", (req, res) => {
-    log(req.body);
-
-    // Create a new user
-    const user = new User({
+    // Create a new clinic
+    const clinic = new Clinic({
         username: req.body.username,
         password: req.body.password
     });
+    
+    Clinic.findByUserName(clinic.username)
+    .then( () => {
 
-    // Save the user
-    user.save().then(
-        user => {
-            res.send(user);
-        },
-        error => {
+        // Save the clinic
+        clinic.save()
+        .then(clinic => {
+            res.send(clinic);
+        })
+        .catch(error => {
             res.status(400).send(error); // 400 for bad request
-        }
-    );
+        });
+
+    })
+    .catch( () => {
+        res.status(406).send()   
+    });
+
 });
 
+// A route to login and create a session
+app.post("/clinics/login", (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    // Use the static method on the Patient model to find a patient
+    // by their email and password
+    Clinic.findByUserNamePassword(username, password)
+        .then(clinic => {
+            // Add the clinic's id to the session cookie.
+            // We can check later if this exists to ensure we are logged in.
+            req.session.clinic = clinic._id;
+            req.session.username = clinic.username;
+            res.send({ currentUser: clinic.username });
+        })
+        .catch(error => {
+            error  === 'Username Not Found' ? res.status(400).send() : res.status(406).send() 
+        });
+});
+
+// A route to logout a clinic
+app.get("/clinics/logout", (req, res) => {
+    // Remove the session
+    req.session.destroy(error => {
+        if (error) {
+            res.status(500).send(error);
+        } else {
+            res.send()
+        }
+    });
+});
+
+// A route to check if a clinic is logged in on the session cookie
+app.get("/clinics/check-session", (req, res) => {
+    if (req.session.clinic) {
+        res.send({ currentUser: req.session.username });
+    } else {
+        res.status(401).send();
+    }
+});
+
+// Other routes
 app.post('/message', (req, res) => {
 	// log(req.body)
 
@@ -258,8 +214,6 @@ app.post('/message', (req, res) => {
 })
 
 
-
-
 /*** Webpage routes below **********************************/
 // Serve the build
 app.use(express.static(__dirname + "/team05-reactapp/build"));
@@ -267,7 +221,7 @@ app.use(express.static(__dirname + "/team05-reactapp/build"));
 // All routes other than above will go to index.html
 app.get("*", (req, res) => {
     // check for page routes that we expect in the frontend to provide correct status code.
-    const goodPageRoutes = ["/"];
+    const goodPageRoutes = ["/", "/patientlogin", "/cliniclogin", "/userhome", "/registerclinic", "/registerpatient", "/adminlogin"];
     if (!goodPageRoutes.includes(req.url)) {
         // if url not in expected page routes, set status to 404.
         res.status(404);

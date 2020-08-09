@@ -19,11 +19,36 @@ import "./styles.css";
 
 class Home extends React.Component {
 
+    constructor(props) {
+      super(props);
+    }
+
     state = {
 
       login: null,
       register: null
     }
+
+    // logs out the user
+    patientLogin = () => {
+      this.props.history.push("/patientlogin");
+    }
+    
+    clinicLogin = () => {
+      this.props.history.push("/cliniclogin");
+    }
+    
+    adminLogin = () => {
+      this.props.history.push("/adminlogin");
+    }
+    
+    clinicRegistration = () => {
+      this.props.history.push("/registerclinic");
+    }
+    
+    patientRegistration = () => {
+      this.props.history.push("/registerpatient");
+    } 
 
     handleClick = event => {
     
@@ -49,7 +74,7 @@ class Home extends React.Component {
   
       return (
         <div className="home__bg center">
-          <img className="home_banner" src={Banner} alt="Banner" />;
+          <img className="home_banner" src={Banner} alt="Banner" />
           <HomeContent></HomeContent>
           <Link className="component__button-link" to={"./../Calendar"}>
             <Button variant="contained"
@@ -96,13 +121,9 @@ class Home extends React.Component {
             open={Boolean(this.state.login)}
             onClose={this.handleClose}
           >
-            <Link className="component__button-link" to={"./../User Login"}>
-              <MenuItem>User Login</MenuItem>
-            </Link>
-
-            <Link className="component__button-link" to={"./../Admin Login"}>
-              <MenuItem>Admin Login</MenuItem>
-            </Link>
+            <MenuItem onClick={this.patientLogin}>Patient Login</MenuItem>
+            <MenuItem onClick={this.clinicLogin}>Clinic Login</MenuItem>
+            <MenuItem onClick={this.adminLogin}>Admin Login</MenuItem>
 
           </Menu>
 
@@ -123,13 +144,8 @@ class Home extends React.Component {
             open={Boolean(this.state.register)}
             onClose={this.handleClose}
           >
-            <Link className="component__button-link" to={"./../Clinic Registration"}>
-              <MenuItem>New Clinic</MenuItem>
-            </Link>
-
-            <Link className="component__button-link" to={"./../Patient Registration"}>
-              <MenuItem>New Patient</MenuItem>
-            </Link>
+            <MenuItem onClick={this.clinicRegistration}>New Clinic</MenuItem>
+            <MenuItem onClick={this.patientRegistration}>New Patient</MenuItem>
 
           </Menu>
            
