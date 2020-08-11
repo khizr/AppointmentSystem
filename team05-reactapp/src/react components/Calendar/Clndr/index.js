@@ -15,7 +15,6 @@ class Clndr extends React.Component {
             currentDay: "1",
             currentYear: "2020",
             requestStatus: "",
-            currentAppointments: "B4"
     };
 }
     setDate = (a) => {
@@ -44,30 +43,32 @@ class Clndr extends React.Component {
         }
     }
 
-    getAppointments =  () => {
+    getAppointments = () => {
+        // the URL for the request
         const url = '/Calendar';
-
+    
         // Since this is a GET request, simply call fetch on the URL
         fetch(url)
         .then((res) => { 
             if (res.status === 200) {
                 // return a promise that resolves with the JSON body
-            return res.json() 
-        } else {
-                alert('Could not get appointments')
-        }                
+               return res.json() 
+           } else {
+                alert('Could not get bookings')
+           }                
         })
         .then((json) => {  // the resolved promise with the JSON body
-            // let bookings = document.querySelector('#bookingsList')
-            // bookings.innerHTML = '';
-            json.students.map((s) => {
+            let bookingsList = document.querySelector('#bookingsList')
+            bookingsList.innerHTML = '';
+            console.log(json)
+            json.bookings.map((s) => {
                 let li = document.createElement('li')
-                console.log(li)
-                li.innerHTML = "Name: <strong>${s.clinicName}</strong>, Year: <strong>${s.time}</strong>"
-                // let newList = this.state.currentAppointments + [li]
-                this.setState({currentAppointments: "Date: August 5, 2020 at 5:00PM"});
+                li.innerHTML = "Name: <strong>"+s.clinicName+"</strong>, Year: <strong>"+s.year+"</strong>"
+                bookingsList.appendChild(li)
+                console.log(s)
             })
         }).catch((error) => {
+            console.log(error)
         })
     }
 
@@ -208,16 +209,11 @@ class Clndr extends React.Component {
             <option value="6">6:00PM</option>
         </select><span> </span>
         <input input type="button" onClick={() => this.request()} value="Submit" ></input>
-            <div className = "topMarg">{this.state.requestStatus}</div>
-    </form>
+        <div className = "topMarg">{this.state.requestStatus}</div>
+        </form>
+        <input id = "viewApptButton" input type="button" onClick={() => this.getAppointments()} value="View Appointments" ></input>
+        <ul id='bookingsList'></ul>
         </div>
-    
-    <div>
-    <input input type="button" onClick={() => this.getAppointments()} value="View Appointments" ></input>
-    <ul id='bookingsList'>
-        <li>{this.state.currentAppointments}</li>
-    </ul>
-    </div>
 
     </div>
       );

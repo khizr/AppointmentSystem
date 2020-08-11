@@ -64,7 +64,6 @@
     .currentDay{
         background: #3734f1;
         float:right;
-        height:200px;
         width:500px;
         margin:20px;
         margin-top: 90px;
@@ -100,4 +99,14 @@
     }
     .topMarg{
         margin-top: 20px;
+    }
+
+    #viewApptButton{
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+
+    #bookingsList{
+        width: 400px;
+        list-style: none;
     }
