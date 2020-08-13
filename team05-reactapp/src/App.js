@@ -10,69 +10,130 @@ import Calendar from './react components/Calendar';
 import Chat from './react components/Chat';
 import StoresNearYou from './react components/StoresNearYou';
 import AdminLogin from './react components/Admin Login';
-import UserLogin from './react components/User Login';
+import PatientLogin from './react components/Patient Login';
+import ClinicLogin from './react components/Clinic Login';
 import ClinicRegister from './react components/Clinic Registration';
 import PatientRegister from './react components/Patient Registration';
 import UserHome from './react components/User Home';
 import AdminHome from './react components/Admin Home';
 
+import { readCookie } from "./actions/readcookie";
+
 
 
 class App extends React.Component {
 
-  render() {
-    return (
-        <div>
-        <BrowserRouter>
-          <Switch> { /* Similar to a switch statement - shows the component depending on the URL path */ }
-            { /* Each Route below shows a different component depending on the exact path in the URL  */ }
-            <Route exact path='/'> 
-                <Home/>
-            </Route>
+    constructor(props) {
+        super(props);
+        readCookie(this); // sees if a user is logged in. 
+    }
 
-            <Route exact path='/Calendar'>
-                <Calendar/>
-            </Route>
+    // global state passed down includes the current logged in user.
+    state = {
+        home: "false",
+        currentUser: null,
+        usernameError: "false",
+        passwordError: "false",
+        repeatPassError: "false",
+        userFormatError: "false",
+        successfullRegister:"false"
+    }
 
-            <Route exact path='/StoresNearYou'>
-                <StoresNearYou/>
-            </Route>
+    render() {
 
-            <Route exact path='/Chat'>
-                <Chat/>
-            </Route>
+        const { currentUser } = this.state;
+        console.log(currentUser)
 
-            
-            <Route exact path='/Admin Login'>
-                <AdminLogin/>
-            </Route>
+        return (
+            <div>
+            <BrowserRouter>
+            <Switch> { /* Similar to a switch statement - shows the component depending on the URL path */ }
+                { /* Each Route below shows a different component depending on the exact path in the URL  */ }
 
-            <Route exact path='/User Login'>
-                <UserLogin/>
-            </Route>
+                {/* Route to Home */}
+                <Route exact path='/'
+                    render={({ history }) => (
+                        <div>
+                            {<Home history={history}/>}
+                        </div>
+                            
+                    )}
+                />
 
-            <Route exact path='/Clinic Registration'>
-                <ClinicRegister/>
-            </Route>
+                {/* Routes to User Home if user is logged in, otherwise goes to Patient Login page*/}
+                <Route
+                    exact path={["/patientlogin", "/userhome"] /* any of these URLs are accepted. */ }
+                    render={({ history }) => (
+                        <div>
+                            { /* Different componenets rendered depending on if someone is logged in. */}
+                            {!currentUser ? <PatientLogin history={history} app={this}/> : <UserHome history={history} app={this}/> }
+                        </div>
+                        
+                    )}
+                />
+                
+                {/* Routes to User Home if user is logged in, otherwise goes to Clinic Login page*/}
+                <Route
+                    exact path={["/cliniclogin", "/userhome"] /* any of these URLs are accepted. */ }
+                    render={({ history }) => (
+                        <div>
+                            { /* Different componenets rendered depending on if someone is logged in. */}
+                            {!currentUser ? <ClinicLogin history={history} app={this} />: <UserHome history={history} app={this}/>}
+                        </div>
+                        
+                    )}
+                />
 
-            <Route exact path='/Patient Registration'>
-                <PatientRegister/>
-            </Route>
+                <Route exact path='/Calendar'>
+                    <Calendar/>
+                </Route>
 
-            <Route exact path='/User Home'>
-                <UserHome/>
-            </Route>
+                <Route exact path='/StoresNearYou'>
+                    <StoresNearYou/>
+                </Route>
 
-            <Route exact path='/Admin Home'>
-                <AdminHome/>
-            </Route>
+                <Route exact path='/Chat'>
+                    <Chat/>
+                </Route>
 
-            
-          </Switch>
-        </BrowserRouter>
-      </div>
-    );  
-  }
+                
+                <Route exact path='/adminlogin'
+                    render={({ history }) => (
+                        <div>
+                            {<AdminLogin history={history}/>}
+                        </div>
+                            
+                    )}
+                />
+
+                <Route exact path= '/registerclinic'
+                    render={({ history }) => (
+                        <div>
+                           <ClinicRegister history={history} app={this}/>
+                        </div>
+                            
+                    )}
+                />
+
+                <Route exact path='/registerpatient'
+                    render={({ history }) => (
+                        <div>
+                            {<PatientRegister history={history} app={this}/>}
+                        </div>
+                            
+                    )}
+                />
+
+                <Route exact path='/Admin Home'>
+                    <AdminHome/>
+                </Route>
+
+                
+            </Switch>
+            </BrowserRouter>
+        </div>
+        );  
+    }
 }
 
 export default App;

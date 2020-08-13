@@ -1,0 +1,27 @@
+{
+    "name": "cloud_clinics_server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "engines": {
+        "node": "12.18.0"
+    },
+    "scripts": {
+        "setup": "npm install && cd team05-reactapp && npm install && cd ..",
+        "build-run": "cd team05-reactapp && npm run build && cd .. && node server.js",
+        "start": "node server.js",
+        "heroku-postbuild": "cd team05-reactapp && npm install && npm run build",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "express": "^4.17.1",
+        "express-session": "^1.17.0",
+        "mongodb": "^3.5.9",
+        "mongoose": "^5.9.26",
+        "validator": "^13.1.1"
+    }
+}

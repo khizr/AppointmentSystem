@@ -34,6 +34,48 @@ class Chat extends React.Component {
     this.setState({
       sentMessages: messageList
     })
+
+    console.log("got heeere")
+    console.log("got heeere2")
+
+    const url = '/message';
+
+    let data = {
+      name: message
+    }
+    console.log('created req')
+    const request = new Request(url, {
+      method: 'post', 
+      body: JSON.stringify(data),
+      headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+      },
+    });
+
+    fetch(request)
+    .then(function(res) {
+        console.log('msg')
+        // Handle response we get from the API.
+        // Usually check the error codes to see what happened.
+        if (res.status === 200) {
+            // If student was added successfully, tell the user.
+            console.log('added message')
+           
+        } else {
+            // If server couldn't add the student, tell the user.
+            // Here we are adding a generic message, but you could be more specific in your app.
+            console.log('could not add message')
+     
+        }
+        console.log(res)  // log the result in the console for development purposes,
+                          //  users are not expected to see this.
+    }).catch((error) => {
+        console.log(error)
+    })
+
+
+
   }
 
   sendSuggestion = (suggestion) => {

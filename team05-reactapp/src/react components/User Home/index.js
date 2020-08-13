@@ -8,6 +8,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Banner from "./static/banner.png"
 import HomeContent from "./../Home Content";
 import styles from "./styles";
+import {logout} from "../../actions/patient";
 
 // import styles from "./styles"
 import "./styles.css";
@@ -16,7 +17,19 @@ import "./styles.css";
 
 class UserHome extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.props.history.push("/userhome");
+  }
+
+  // logs out the user
+    logoutUser = (app) => {
+      this.props.history.push("/");
+      logout(app);
+    } 
+
     render() {
+      const { app } = this.props
   
       return (
         <div className="home__bg center">
@@ -50,14 +63,13 @@ class UserHome extends React.Component {
             Clinics Near You</Button>
           </Link>
 
-          <Link className="component__button-link" to={"/"}>
-            <Button variant="contained"
-            color="secondary" 
-            style={styles.buttonStyle}
-            className="button_logout"
-            endIcon={<ExitToAppIcon />}>
-            Logout</Button>   
-          </Link>
+          <Button variant="contained"
+          color="secondary" 
+          style={styles.buttonStyle}
+          className="button_logout"
+          onClick={() => this.logoutUser(app)}
+          endIcon={<ExitToAppIcon />}>
+          Logout</Button>
            
 
         </div>
