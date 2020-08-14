@@ -1,19 +1,37 @@
-import React from "react";
+import React, { Component } from 'react';
 import Button from "@material-ui/core/Button";
 import TextField from '@material-ui/core/TextField';
 import SearchIcon from '@material-ui/icons/Search';
 import HomeIcon from '@material-ui/icons/Home';
 import { Link } from "react-router-dom";
 import Slider from '@material-ui/core/Slider';
-import { Map, GoogleApiWrapper } from 'google-maps-react';
+import Geocode from "react-geocode";
 import "./styles.css";
 
-/* Component for the StoresNearYou page */
+//distance function from https://www.geodatasource.com/developers/javascript
+function distance(lat1, lon1, lat2, lon2, unit) {
+	if ((lat1 == lat2) && (lon1 == lon2)) {
+		return 0;
+	}
+	else {
+		var radlat1 = Math.PI * lat1/180;
+		var radlat2 = Math.PI * lat2/180;
+		var theta = lon1-lon2;
+		var radtheta = Math.PI * theta/180;
+		var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+		if (dist > 1) {
+			dist = 1;
+		}
+		dist = Math.acos(dist);
+		dist = dist * 180/Math.PI;
+		dist = dist * 60 * 1.1515;
+		if (unit=="K") { dist = dist * 1.609344 }
+		if (unit=="N") { dist = dist * 0.8684 }
+		return dist;
+	}
+}
 
 class Clinic extends React.Component{
-  changeState = () => {
-    this.setState({distance:10})
-  }
   render(){
     return(
       <tr>
@@ -26,9 +44,9 @@ class Clinic extends React.Component{
   }
 }
 
-let clinics = [<Clinic name="Mahfooz Clinic" address="123 Bay St" postal="2" distance="0" />, 
-<Clinic name="Cloud Clinic" address="123 Recovery Street Bay St" postal="6" distance="0"/>,
-<Clinic name="Fast Healing Walk-in" address="333 close to you St" postal="11" distance="0"/>]
+let clinics = [<Clinic name="Collegeway Clinic" address="2686 The Collegeway, Mississauga, ON L5L 2M9" postal="L5L 2M9" distance="0" />, 
+<Clinic name="New Life Clinic" address="2655 Liruma Rd Unit 4, Mississauga, ON L5K 1Y8" postal="L5K 1Y8" distance="0"/>,
+<Clinic name="Therahands Health Clinic" address="Ridgeway Dr, Mississauga, ON L5L 5M6" postal="L5L 5M6" distance="0"/>]
 
 class Table extends React.Component {
   constructor(props) {
@@ -36,7 +54,7 @@ class Table extends React.Component {
     this.state = {postal: "", myClinics: clinics}
   }
   static getDerivedStateFromProps(props, state) {
-    return {postal: props.postal, myClinics: clinics};
+    return {postal: props.postal, myClinics: props.myClinics};
   }
   reload = () => {
     window.location.reload();
@@ -64,45 +82,98 @@ class Table extends React.Component {
   }
 }
 
+
 class StoresNearYou extends React.Component {
     constructor(props) {
       super(props);
       this.state = {show: false, postal: '', showSearch: true, maxDistance: 3};
-      this.allowedPostalCodes = ["1","2","3","4","5","6","7","8","9","10"]
     }
     reload = () => {
       window.location.reload();
     }
+
     showTable = () => {
+      let myLat;
+      let myLng;
+      let myLat2;
+      let myLng2;
+      let errFlag = false;
+      async function wrapper(postal, myStore) {
 
-      if (this.allowedPostalCodes.includes(this.state.postal)){
-        this.setState({showSearch: false});
-      var sortedClinics = []
-      for (let i =0; i < clinics.length; i++){
-        sortedClinics[i] = Math.abs(parseInt(this.state.postal)-parseInt(clinics[i].props.postal))
+        console.log(postal)
+        let resp = Geocode.fromAddress(postal).then(
+          response => {
+            myLat = response.results[0].geometry.location.lat;
+            myLng = response.results[0].geometry.location.lng;
+          },
+          error => {
+            alert("Not a Valid Postal Code")
+            errFlag = true;
+          }
+        
+        );
+        let result = await resp
+        if(!errFlag){
+          let clinic;
+          for (let i =0; i < clinics.length; i++){
+                
+                let resp2 = Geocode.fromAddress(clinics[i].props.postal).then(
+                  response => {
+                    clinic = clinics[i]
+                    myLat2 = response.results[0].geometry.location.lat;
+                    myLng2 = response.results[0].geometry.location.lng;
+                    let dist = distance(myLat, myLng, myLat2, myLng2, "K")
+                    clinics[i] = (<Clinic name={clinic.props.name} address={clinic.props.address} postal={clinic.props.postal} distance={Math.round(dist * 10) / 10} />) 
+                  },
+                  error => {
+                    alert("Not a Valid Postal Code")
+                  }
+                );
+                let result2 = await resp2
+                console.log(myLat2, myLng2)
+          }
 
-      }
-      let clinicsCopy = [];
-      for (let i =0; i < clinics.length; i++){
-        let lowest = Math.min.apply(Math, sortedClinics)
-        let indexClinic = sortedClinics.indexOf(lowest)
-        sortedClinics[indexClinic] = Infinity; 
-        let clinic = clinics[indexClinic]
-        console.log("max" + this.state.maxDistance)
-        if(this.state.maxDistance >= lowest){
-          clinicsCopy[i] = <Clinic name={clinic.props.name} address={clinic.props.address} postal={clinic.props.postal} distance={lowest} />
+          clinics.sort(function(clinic, otherClinic){
+            if(clinic.props.distance > otherClinic.props.distance){
+                return 1
+            }else if (clinic.props.distance < otherClinic.props.distance){
+                return -1
+            }
+            return 0
+          })
+          myStore.setState({showSearch: false});
+          myStore.setState({show:true})
         }
+        
+
       }
-      clinics = clinicsCopy;
-      this.setState({show: true});
-      }
-      else if(this.state.postal === ""){
-        alert("Please enter a postal code")
-      }
-      else{
-        alert(this.state.postal + " is not a Valid Postal Code\n" + "Valid Postal codes are: "+this.allowedPostalCodes)
-      }
+
+      wrapper(this.state.postal, this);
+      
+    
+    //this.
+  
+            
+            
+          //console.log(clinics)
+
+
+    // let myLat;
+    // let lat;
+    // let lng;
+    // Geocode.fromAddress("L5L 1C6").then(
+    //   response => {
+    //     const { lat, lng } = response.results[0].geometry.location;
+    //     //console.log(lat, lng);
+    //   },
+    //   error => {
+    //     console.error(error);
+    //   }
+    // );
+    // console.log(lat,lng)
+    // 
     }
+    
     savePostal = (event) => {
       this.setState({postal: event.target.value});
     }
@@ -112,8 +183,13 @@ class StoresNearYou extends React.Component {
       let searchBar;
       let slider;
 
+      Geocode.setApiKey("AIzaSyAmA7r2_y6oIClRhZiM_pOzbPA2aN_53qk");
+      Geocode.setLanguage("en");
+
+
       if (this.state.show) {
-        clinicsTable = <Table postal={this.state.postal}/>;
+        clinicsTable = <Table postal={this.state.postal}
+                        myClinics={clinics}/>;
         if(clinics.length === 0){
           clinicsTable = <div>
           <div id = "round-container2">
@@ -162,12 +238,7 @@ class StoresNearYou extends React.Component {
           {searchBar}
 
           {clinicsTable}
-
-          <Map
-          google={this.props.google}
-          zoom={8}
-          initialCenter={{ lat: 47.444, lng: -122.176}}
-          />
+          
         </div>
       );
     }
