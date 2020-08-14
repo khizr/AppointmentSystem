@@ -197,17 +197,31 @@ app.post("/Calendar", (req, res) => {
         day: req.body.day,
         time: req.body.time,
         year: req.body.year,
-        username: req.body.username
-	})
-    booking.save().then((result) => {
-		res.send(result)
-	}).catch((error) => {
-		if (isMongoError(error)) { // check for if mongo server suddenly dissconnected before this request.
-			res.status(500).send('Internal server error')
+        creator: req.session.patient
+    })
+    
+    //check if this timing is available
+    CalendarBooking.findOne({clinicName: req.body.clinicName, month: req.body.month, day: req.body.day, time: req.body.time, year: req.body.year}).then((old) => {
+		if (!old) {
+            booking.save().then((result) => {
+                res.send(result)
+            }).catch((error) => {
+                if (isMongoError(error)) { // check for if mongo server suddenly dissconnected before this request.
+                    res.status(500).send('Internal server error')
+                } else {
+                    log(error) // log server error to the console, not to the client.
+                    res.status(400).send('Bad Request') // 400 for bad request gets sent to client.
+                }
+            })
 		} else {
-			log(error) // log server error to the console, not to the client.
-			res.status(400).send('Bad Request') // 400 for bad request gets sent to client.
+			/// sometimes we wrap returned object in another object:
+            //res.send({student})   
+			res.status(400).send('Time Slot Unavailable')
 		}
+	})
+	.catch((error) => {
+		log(error)
+		res.status(500).send('Internal Server Error')  // server error
 	})
 })
 
@@ -221,7 +235,9 @@ app.get('/Calendar', (req, res) => {
 		return;
 	} 
 
-	CalendarBooking.find().then((bookings) => {
+	CalendarBooking.find({
+		creator: req.session.patient // from authenticate middleware
+	}).then((bookings) => {
 		res.send({ bookings }) // can wrap students in object if want to add more properties
 	})
 	.catch((error) => {

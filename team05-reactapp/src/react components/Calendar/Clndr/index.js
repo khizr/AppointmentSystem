@@ -8,15 +8,20 @@ class Clndr extends React.Component {
         super(props);
         this.state = {
             currentDate: "Click on a day on the Calendar",
-            currentCalendarMonth: "June",
-            currentMonthIndex: 0,
-            months: ["June", "July", "August", "September", "October", "November", "December"],
+            currentCalendarMonth: "August",
+            currentMonthIndex: 5,
+            //months: ["June", "July", "August", "September", "October", "November", "December"],
+            months: ["March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "January", "February"],
+            maxDays: [31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 31, 28],
+            weekDays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
             currentMonth: "June",
             currentDay: "1",
             currentYear: "2020",
-            requestStatus: "",
+            requestStatus: ""
     };
 }
+    //make a function called add rows that clears chart and re-adds each cell every time month is changed
+    //use code from indiproj
     setDate = (a) => {
         const newDate = "Schedule for: " + this.state.currentMonth + " " + a + ", " + this.state.currentYear;
         this.setState({currentDay: a});
@@ -63,7 +68,7 @@ class Clndr extends React.Component {
             console.log(json)
             json.bookings.map((s) => {
                 let li = document.createElement('li')
-                li.innerHTML = "Name: <strong>"+s.clinicName+"</strong>, Year: <strong>"+s.year+"</strong>"
+                li.innerHTML = "Appointment on: <strong>"+s.month+" "+s.day+" "+s.year+" at "+s.time
                 bookingsList.appendChild(li)
                 console.log(s)
             })
@@ -72,52 +77,55 @@ class Clndr extends React.Component {
         })
     }
 
-    request = () => {
-        this.setState({requestStatus: "Appointment request successfully sent."});
-
-        const url = '/Calendar';
-
-        var dropdown = document.getElementById("timeDropDown");
-        var timeInput = dropdown.options[dropdown.selectedIndex].text;
-
-        // The data we are going to send in our request
-        let data = {
-            clinicName: "SampleName",
-            month: this.state.currentMonth,
-            day: this.state.currentDay,
-            time: timeInput,
-            year: this.state.currentYear,
-            username: 1
+    requestAppt = () => {
+        if (this.state.currentDate === "Click on a day on the Calendar"){
+            alert("Select a day on the calendar to book an appointment")
         }
-        // Create our request constructor with all the parameters we need
-        const request = new Request(url, {
-            method: 'post', 
-            body: JSON.stringify(data),
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-        });
+        else{
+            const url = '/Calendar';
 
-        // Send the request with fetch()
-        fetch(request)
-        .then(function(res) {
+            var dropdown = document.getElementById("timeDropDown");
+            var timeInput = dropdown.options[dropdown.selectedIndex].text;
 
-            // Handle response we get from the API.
-            // Usually check the error codes to see what happened.
-            if (res.status === 200) {
-                // If student was added successfully, tell the user.
-                console.log('Added Booking')            
-            } else {
-                // If server couldn't add the student, tell the user.
-                // Here we are adding a generic message, but you could be more specific in your app.
+            // The data we are going to send in our request
+            let data = {
+                clinicName: "SampleName",
+                month: this.state.currentMonth,
+                day: this.state.currentDay,
+                time: timeInput,
+                year: this.state.currentYear,
             }
-            console.log(res)  // log the result in the console for development purposes,
-                            //  users are not expected to see this.
-        }).catch((error) => {
-            console.log(error)
-        })
+            // Create our request constructor with all the parameters we need
+            const request = new Request(url, {
+                method: 'post', 
+                body: JSON.stringify(data),
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+            });
 
+            // Send the request with fetch()
+            fetch(request)
+            .then(function(res) {
+
+                // Handle response we get from the API.
+                // Usually check the error codes to see what happened.
+                if (res.status === 200) {
+                    // If student was added successfully, tell the user.
+                    console.log('Added Booking')   
+                    this.setState({requestStatus: "Appointment request successfully sent."});         
+                } else {
+                    // If server couldn't add the student, tell the user.
+                    // Here we are adding a generic message, but you could be more specific in your app.
+                    alert('Sorry, this time slot is taken.')
+                }
+                console.log(res)  // log the result in the console for development purposes,
+                                //  users are not expected to see this.
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
     }
 
     render() {
@@ -126,7 +134,7 @@ class Clndr extends React.Component {
         <div className="table">
       <div className="calendarBanner"><strong><Button onClick={() => this.changeMonthDown()} endIcon={<ArrowBackIosIcon />}></Button>{this.state.currentCalendarMonth + " " + this.state.currentYear}<Button onClick={() => this.changeMonthUp()} endIcon={<ArrowForwardIosIcon />}></Button></strong></div>
             <table className="rowDays">
-                {/*<tr className="rowWeek">
+                <tr className="rowWeek">
                     <th>Sun</th>
                     <th>Mon</th>
                     <th>Tue</th>
@@ -134,7 +142,7 @@ class Clndr extends React.Component {
                     <th>Thu</th>
                     <th>Fri</th>
                     <th>Sat</th>
-                </tr>*/}
+                </tr>
                 <tr className="rowDays">
                     <th></th>
                     <th onClick={() => this.setDate("1")}>1</th>
@@ -208,7 +216,7 @@ class Clndr extends React.Component {
             <option value="5.5">5:30PM</option>
             <option value="6">6:00PM</option>
         </select><span> </span>
-        <input input type="button" onClick={() => this.request()} value="Submit" ></input>
+        <input input type="button" onClick={() => this.requestAppt()} value="Submit" ></input>
         <div className = "topMarg">{this.state.requestStatus}</div>
         </form>
         <input id = "viewApptButton" input type="button" onClick={() => this.getAppointments()} value="View Appointments" ></input>
