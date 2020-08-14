@@ -1,3 +1,7 @@
+//this js file was an attempt to replace index.js to make the calendar start
+// on the correct day of the week and to have the correct number of days
+// I tested the code with js and had it functional but wasn't able to make it work in react
+
 import React from "react";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
