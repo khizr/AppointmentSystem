@@ -24,10 +24,10 @@ const CalendarBooking = mongoose.model('CalendarBooking', {
         type: String,
         required: true
     },
-    username: {
-        type: String,
-        required: true
-    }
+    creator: {
+		type: mongoose.Schema.Types.ObjectId,
+		required: true
+	}
 })
 
 module.exports = { CalendarBooking }
