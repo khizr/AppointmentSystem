@@ -1,3 +1,7 @@
+//this js file was an attempt to replace index.js to make the calendar start
+// on the correct day of the week and to have the correct number of days
+// I tested the code with js and had it functional but wasn't able to make it work in react
+
 import React from "react";
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
@@ -14,7 +18,7 @@ class Clndr extends React.Component {
             months: ["March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "January", "February"],
             maxDays: [31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 31, 28],
             weekDays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            currentMonth: "June",
+            currentMonth: "August",
             currentDay: "1",
             currentYear: "2020",
             requestStatus: ""
@@ -33,16 +37,6 @@ class Clndr extends React.Component {
             const num = this.state.currentMonthIndex + 1;
             this.setState({currentMonthIndex: num});
             const newMonth = this.state.months[num];
-            if (newMonth === "January"){
-                const year = (parseInt(this.state.currentYear) + 1).toString();
-                this.setState({currentYear: year})
-            }
-            this.setState({currentMonth: newMonth});
-            this.setState({currentCalendarMonth: newMonth});
-        }
-        else{
-            this.setState({currentMonthIndex: 0});
-            const newMonth = this.state.months[0];
             this.setState({currentMonth: newMonth});
             this.setState({currentCalendarMonth: newMonth});
         }
@@ -53,16 +47,6 @@ class Clndr extends React.Component {
             const num = this.state.currentMonthIndex - 1;
             this.setState({currentMonthIndex: num});
             const newMonth = this.state.months[num];
-            if (newMonth === "December"){
-                const year = (parseInt(this.state.currentYear) - 1).toString();
-                this.setState({currentYear: year})
-            }
-            this.setState({currentMonth: newMonth});
-            this.setState({currentCalendarMonth: newMonth});
-        }
-        else {
-            this.setState({currentMonthIndex: 11});
-            const newMonth = this.state.months[11];
             this.setState({currentMonth: newMonth});
             this.setState({currentCalendarMonth: newMonth});
         }
@@ -77,10 +61,10 @@ class Clndr extends React.Component {
         .then((res) => { 
             if (res.status === 200) {
                 // return a promise that resolves with the JSON body
-                return res.json() 
-            } else {
+               return res.json() 
+           } else {
                 alert('Could not get bookings')
-            }                
+           }                
         })
         .then((json) => {  // the resolved promise with the JSON body
             let bookingsList = document.querySelector('#bookingsList')
@@ -148,69 +132,57 @@ class Clndr extends React.Component {
     }
 
     render() {
-    return (
+
+    function calculateDoW (){
+        const M = this.state.months.indexOf(this.state.currentCalendarMonth) + 1
+        const C = parseInt(this.currentYear.toString()[0]+this.state.currentYear.toString()[1]);
+        let Y = parseInt(this.state.currentYear.toString()[2]+this.state.currentYear.toString()[3]);
+        if (M == 11 || M == 12){
+            Y-=1;
+        }
+        return (1 + Math.floor(2.6*M - 0.2) - 2*C + Y + Math.floor(Y/4) + Math.floor(C/4))%7
+    }
+
+    function Numbers(){
+        let days = [];
+        for (let i = 0; i < calculateDoW(); i++) {
+            days.push(<td>{""}</td>);
+        }
+        let max = this.state.maxDays[this.state.months.indexOf(this.state.currentMonth)]
+        for (let i = 0; i<=max; i++){
+            days.push(<td>{i}</td>);
+        }
+        let rows = []
+        let row = []
+        while (days!=[]){
+            var day = days[0]
+            row.append(day)
+            if (row.length == 7){
+                rows.push(row)
+                row = []
+            }
+        }
+        let ret = rows.map((d, i) => {
+            return <tr>{d}</tr>;
+          });
+        return ret;
+    }
+
+    function CalendarTable() {
+        let nums = Numbers()
+        var tb = <table className = 'rowDays'><tr className='rowWeek'><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr><tbody>{nums}</tbody></table>;
+        return tb;
+        }
+
+      return (
         <div>
+
         <div className="table">
-    <div className="calendarBanner"><strong><Button onClick={() => this.changeMonthDown()} endIcon={<ArrowBackIosIcon />}></Button>{this.state.currentCalendarMonth + " " + this.state.currentYear}<Button onClick={() => this.changeMonthUp()} endIcon={<ArrowForwardIosIcon />}></Button></strong></div>
-            <table className="rowDays">
-                <tr className="rowWeek">
-                    <th>Sun</th>
-                    <th>Mon</th>
-                    <th>Tue</th>
-                    <th>Wed</th>
-                    <th>Thu</th>
-                    <th>Fri</th>
-                    <th>Sat</th>
-                </tr>
-                <tr className="rowDays">
-                    <th></th>
-                    <th onClick={() => this.setDate("1")}>1</th>
-                    <th onClick={() => this.setDate("2")}>2</th>
-                    <th onClick={() => this.setDate("3")}>3</th>
-                    <th onClick={() => this.setDate("4")}>4</th>
-                    <th onClick={() => this.setDate("5")}>5</th>
-                    <th onClick={() => this.setDate("6")}>6</th>
-                </tr>
-                <tr className="rowDays">
-                    <th onClick={() => this.setDate("7")}>7</th>
-                    <th onClick={() => this.setDate("8")}>8</th>
-                    <th onClick={() => this.setDate("9")}>9</th>
-                    <th onClick={() => this.setDate("10")}>10</th>
-                    <th onClick={() => this.setDate("11")}>11</th>
-                    <th onClick={() => this.setDate("12")}>12</th>
-                    <th onClick={() => this.setDate("13")}>13</th>
-                </tr>
-                <tr className="rowDays">
-                    <th onClick={() => this.setDate("14")}>14</th>
-                    <th onClick={() => this.setDate("15")}>15</th>
-                    <th onClick={() => this.setDate("16")}>16</th>
-                    <th onClick={() => this.setDate("17")}>17</th>
-                    <th onClick={() => this.setDate("18")}>18</th>
-                    <th onClick={() => this.setDate("19")}>19</th>
-                    <th onClick={() => this.setDate("20")}>20</th>
-                </tr>
-                <tr className="rowDays">
-                    <th onClick={() => this.setDate("21")}>21</th>
-                    <th onClick={() => this.setDate("22")}>22</th>
-                    <th onClick={() => this.setDate("23")}>23</th>
-                    <th onClick={() => this.setDate("24")}>24</th>
-                    <th onClick={() => this.setDate("25")}>25</th>
-                    <th onClick={() => this.setDate("26")}>26</th>
-                    <th onClick={() => this.setDate("27")}>27</th>
-                </tr>
-                <tr className="rowDays">
-                    <th onClick={() => this.setDate("28")}>28</th>
-                    <th onClick={() => this.setDate("29")}>29</th>
-                    <th onClick={() => this.setDate("30")}>30</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                </tr>
-            </table>
+      <div className="calendarBanner"><strong><Button onClick={() => this.changeMonthDown()} endIcon={<ArrowBackIosIcon />}></Button>{this.state.currentCalendarMonth + " " + this.state.currentYear}<Button onClick={() => this.changeMonthUp()} endIcon={<ArrowForwardIosIcon />}></Button></strong></div>
+            <CalendarTable />
         </div>
         <div className="currentDay">
-    <h2 className="h2me">{this.state.currentDate}</h2>
+      <h2 className="h2me">{this.state.currentDate}</h2>
     
     <form>
         <label for="time">Choose a time to request an appointment: </label>
@@ -243,8 +215,8 @@ class Clndr extends React.Component {
         </div>
 
     </div>
-    );
+      );
     }
-}
-
-export default Clndr;
+  }
+  
+  export default Clndr;

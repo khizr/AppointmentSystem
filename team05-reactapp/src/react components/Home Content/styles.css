@@ -5,6 +5,5 @@
     width: 50%;
     left: 500px;
     border: 4px darkslategrey solid;
-    background-size: 'cover';
-    /* background-image: url("./../Home/static/background.jpg"); */
+    background-size: '100% 100%';
 }

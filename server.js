@@ -15,6 +15,7 @@ const { Patient } = require("./models/patients");
 const { CalendarBooking } = require("./models/clndrBookingModel");
 const { Message } = require("./models/message");
 const { Clinic } = require("./models/clinics");
+const { Admin } = require("./models/admin");
 
 // to validate object IDs
 const { ObjectID } = require("mongodb");
@@ -182,6 +183,70 @@ app.get("/clinics/check-session", (req, res) => {
     }
 });
 
+/** Admin routes below **/
+// Set up a POST route to create a admin user
+app.post("/admins/register", (req, res) => {
+
+    // Create a new admin
+    const admin = new Admin({
+        username: req.body.username,
+        password: req.body.password
+    });
+    
+    // Save the user
+    admin.save().then(
+        admin => {
+            res.send(admin);
+        },
+        error => {
+            res.status(400).send(error); // 400 for bad request
+        }
+    );
+
+});
+
+// A route to login and create a session
+app.post("/admins/login", (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    // Use the static method on the Patient model to find a patient
+    // by their email and password
+    Admin.findByUserNamePassword(username, password)
+        .then(admin => {
+            // Add the admin's id to the session cookie.
+            // We can check later if this exists to ensure we are logged in.
+            req.session.admin = admin._id;
+            req.session.username = admin.username;
+            res.send({ currentUser: admin.username });
+        })
+        .catch(error => {
+            error  === 'Username Not Found' ? res.status(400).send() : res.status(406).send() 
+        });
+});
+
+// A route to logout a admin
+app.get("/admins/logout", (req, res) => {
+    // Remove the session
+    req.session.destroy(error => {
+        if (error) {
+            res.status(500).send(error);
+        } else {
+            res.send()
+        }
+    });
+});
+
+// A route to check if a admin is logged in on the session cookie
+app.get("/admins/check-session", (req, res) => {
+    if (req.session.admin) {
+        res.send({ currentUser: req.session.username });
+    } else {
+        res.status(401).send();
+    }
+});
+
+
 // A route to book an appointment for a specific date/time
 app.post("/Calendar", (req, res) => {
     log(req.body)
@@ -197,17 +262,31 @@ app.post("/Calendar", (req, res) => {
         day: req.body.day,
         time: req.body.time,
         year: req.body.year,
-        username: req.body.username
-	})
-    booking.save().then((result) => {
-		res.send(result)
-	}).catch((error) => {
-		if (isMongoError(error)) { // check for if mongo server suddenly dissconnected before this request.
-			res.status(500).send('Internal server error')
+        creator: req.session.patient
+    })
+    
+    //check if this timing is available
+    CalendarBooking.findOne({clinicName: req.body.clinicName, month: req.body.month, day: req.body.day, time: req.body.time, year: req.body.year}).then((old) => {
+		if (!old) {
+            booking.save().then((result) => {
+                res.send(result)
+            }).catch((error) => {
+                if (isMongoError(error)) { // check for if mongo server suddenly dissconnected before this request.
+                    res.status(500).send('Internal server error')
+                } else {
+                    log(error) // log server error to the console, not to the client.
+                    res.status(400).send('Bad Request') // 400 for bad request gets sent to client.
+                }
+            })
 		} else {
-			log(error) // log server error to the console, not to the client.
-			res.status(400).send('Bad Request') // 400 for bad request gets sent to client.
+			/// sometimes we wrap returned object in another object:
+            //res.send({student})   
+			res.status(400).send('Time Slot Unavailable')
 		}
+	})
+	.catch((error) => {
+		log(error)
+		res.status(500).send('Internal Server Error')  // server error
 	})
 })
 
@@ -221,8 +300,30 @@ app.get('/Calendar', (req, res) => {
 		return;
 	} 
 
-	CalendarBooking.find().then((bookings) => {
+	CalendarBooking.find({
+		creator: req.session.patient // from authenticate middleware
+	}).then((bookings) => {
 		res.send({ bookings }) // can wrap students in object if want to add more properties
+	})
+	.catch((error) => {
+		log(error)
+		res.status(500).send("Internal Server Error")
+	})
+})
+
+// A route to get list of messages
+app.get('/message', (req, res) => {
+
+	// check mongoose connection established.
+	if (mongoose.connection.readyState != 1) {
+		log('Issue with mongoose connection')
+		res.status(500).send('Internal server error')
+		return;
+	} 
+
+	Message.find().then((message) => {
+        res.send({ message }) 
+        console.log("post request completed")
 	})
 	.catch((error) => {
 		log(error)
@@ -240,14 +341,16 @@ app.post('/message', (req, res) => {
 		res.status(500).send('Internal server error')
 		return;
 	}  
-
-	// Create a new student using the Student mongoose model
+    console.log("post request made")
+	// Create a new message using the Message mongoose model
 	const message = new Message({
-		text: req.body.text
+        text: req.body.text,
+        to_user: req.body.to_user,
+        from_user: req.body.from_user
 	})
 
 
-	// Save student to the database
+	// Save message to the database
 	message.save().then((result) => {
         res.send(result)
         console.log("sent")
@@ -262,6 +365,7 @@ app.post('/message', (req, res) => {
 })
 
 
+
 /*** Webpage routes below **********************************/
 // Serve the build
 app.use(express.static(__dirname + "/team05-reactapp/build"));
@@ -269,7 +373,7 @@ app.use(express.static(__dirname + "/team05-reactapp/build"));
 // All routes other than above will go to index.html
 app.get("*", (req, res) => {
     // check for page routes that we expect in the frontend to provide correct status code.
-    const goodPageRoutes = ["/", "/patientlogin", "/cliniclogin", "/userhome", "/registerclinic", "/registerpatient", "/adminlogin"];
+    const goodPageRoutes = ["/", "/patientlogin", "/cliniclogin", "/userhome", "/registerclinic", "/registerpatient", "/adminlogin", "/adminhome"];
     if (!goodPageRoutes.includes(req.url)) {
         // if url not in expected page routes, set status to 404.
         res.status(404);

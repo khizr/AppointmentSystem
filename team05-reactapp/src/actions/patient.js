@@ -88,7 +88,9 @@ export const login = (loginComp, app) => {
         })
         .then(json => {
             if (json.currentUser !== undefined) {
-                app.setState({ currentUser: json.currentUser });
+                app.setState({ 
+                    currentPatient: json.currentUser
+                });
             }
         })
         .catch(error => {
@@ -103,7 +105,7 @@ export const logout = (app) => {
     fetch(url)
         .then(res => {
             app.setState({
-                currentUser: null,
+                currentPatient: null,
                 home: "true",
                 message: { type: "", body: "" }
             });

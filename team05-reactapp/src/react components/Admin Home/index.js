@@ -9,6 +9,7 @@ import AccessibilityIcon from '@material-ui/icons/Accessibility';
 import Banner from "./static/banner.png"
 import HomeContent from "./../Home Content";
 import styles from "./styles";
+import {logout} from "../../actions/admin";
 
 // import styles from "./styles"
 import "./styles.css";
@@ -17,41 +18,25 @@ import "./styles.css";
 
 class AdminHome extends React.Component {
 
+    constructor(props) {
+      super(props);
+      this.props.history.push("/adminhome");
+    }
+
+    // logs out the admin
+    logoutAdmin = (app) => {
+      this.props.history.push("/");
+      logout(app);
+    } 
+
     render() {
+      const { app } = this.props
   
       return (
         <div className="home__bg center">
           <img className="admin_home_banner" src={Banner} alt="Banner" />;
           <HomeContent></HomeContent>
-          <Link className="component__button-link" to={"./../Calendar"}>
-            <Button variant="contained"
-            color="secondary" 
-            style={styles.buttonStyle}
-            className="button_admin_home"
-            endIcon={<EventIcon />}>
-            Calendar
-            </Button>
-          </Link>
 
-          <Link className="component__button-link" to={"./../Chat"}>
-            <Button variant="contained"
-            color="secondary" 
-            style={styles.buttonStyle}
-            className="button_admin_home"
-            endIcon={<ChatIcon />}>
-            Chat</Button>
-          </Link>
-
-          <Link className="component__button-link" to={"./../StoresNearYou"}>
-            <Button variant="contained"
-            color="secondary" 
-            style={styles.buttonStyle}
-            className="button_admin_home"
-            endIcon={<MapIcon />}>
-            Clinics Near You</Button>
-          </Link>
-
-          
             <Button variant="contained"
             color="secondary" 
             style={styles.buttonStyle}
@@ -59,14 +44,13 @@ class AdminHome extends React.Component {
             endIcon={<AccessibilityIcon />}>
             User List</Button>
 
-          <Link className="component__button-link" to={"/"}>
             <Button variant="contained"
             color="secondary" 
             style={styles.buttonStyle}
             className="admin_button_logout"
+            onClick={() => this.logoutAdmin(app)}
             endIcon={<ExitToAppIcon />}>
-            Logout</Button>   
-          </Link>
+            Logout</Button>
            
 
         </div>
