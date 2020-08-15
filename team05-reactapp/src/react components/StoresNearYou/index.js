@@ -98,7 +98,7 @@ class StoresNearYou extends React.Component {
       let myLat2;
       let myLng2;
       let errFlag = false;
-      async function wrapper(postal, myStore) {
+      async function wrapper(postal, obj) {
 
         console.log(postal)
         let resp = Geocode.fromAddress(postal).then(
@@ -123,7 +123,12 @@ class StoresNearYou extends React.Component {
                     myLat2 = response.results[0].geometry.location.lat;
                     myLng2 = response.results[0].geometry.location.lng;
                     let dist = distance(myLat, myLng, myLat2, myLng2, "K")
-                    clinics[i] = (<Clinic name={clinic.props.name} address={clinic.props.address} postal={clinic.props.postal} distance={Math.round(dist * 10) / 10} />) 
+                    
+                    if (dist > obj.state.maxDistance){
+                      clinics.splice(i)
+                    }else{
+                      clinics[i] = (<Clinic name={clinic.props.name} address={clinic.props.address} postal={clinic.props.postal} distance={Math.round(dist * 10) / 10} />) 
+                    }
                   },
                   error => {
                     alert("Not a Valid Postal Code")
@@ -141,37 +146,14 @@ class StoresNearYou extends React.Component {
             }
             return 0
           })
-          myStore.setState({showSearch: false});
-          myStore.setState({show:true})
+          obj.setState({showSearch: false});
+          obj.setState({show:true})
         }
         
 
       }
 
       wrapper(this.state.postal, this);
-      
-    
-    //this.
-  
-            
-            
-          //console.log(clinics)
-
-
-    // let myLat;
-    // let lat;
-    // let lng;
-    // Geocode.fromAddress("L5L 1C6").then(
-    //   response => {
-    //     const { lat, lng } = response.results[0].geometry.location;
-    //     //console.log(lat, lng);
-    //   },
-    //   error => {
-    //     console.error(error);
-    //   }
-    // );
-    // console.log(lat,lng)
-    // 
     }
     
     savePostal = (event) => {
@@ -206,10 +188,10 @@ class StoresNearYou extends React.Component {
                   defaultValue={3}
                   aria-labelledby="discrete-slider"
                   valueLabelDisplay="auto"
-                  step={1}
+                  step={2}
                   marks
                   min={1}
-                  max={10}
+                  max={50}
                   onChange={ (e, val) => this.setState({maxDistance:val}) } 
                 />
         
