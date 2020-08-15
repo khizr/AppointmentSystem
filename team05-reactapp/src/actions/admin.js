@@ -45,8 +45,7 @@ export const login = (loginComp, app) => {
         .then(json => {
             if (json.currentUser !== undefined) {
                 app.setState({ 
-                    currentAdmin: json.currentUser, 
-                    currentUser: true
+                    currentAdmin: json.currentUser
                 });
             }
         })
@@ -63,7 +62,6 @@ export const logout = (app) => {
         .then(res => {
             app.setState({
                 currentAdmin: null,
-                currentUser: false,
                 home: "true",
                 message: { type: "", body: "" }
             });

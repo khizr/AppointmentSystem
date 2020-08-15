@@ -36,12 +36,47 @@ class App extends React.Component {
         currentClinic: null,
         currentPatient: null,
         currentAdmin: null,
-        currentUser: false,
         usernameError: "false",
         passwordError: "false",
         repeatPassError: "false",
         userFormatError: "false",
         successfullRegister:"false"
+    }
+    
+    checkPatient = (history) => {
+        if (this.state.currentAdmin) {
+            return <AdminHome history={history} app={this}/>
+        }
+        else if (this.state.currentClinic || this.state.currentPatient) {
+            return <UserHome history={history} app={this}/>
+        }
+        else {
+            return <PatientLogin history={history} app={this}/>
+        }
+    }
+
+    checkClinic = (history) => {
+        if (this.state.currentAdmin) {
+            return <AdminHome history={history} app={this}/>
+        }
+        else if (this.state.currentClinic || this.state.currentPatient) {
+            return <UserHome history={history} app={this}/>
+        }
+        else {
+            return <ClinicLogin history={history} app={this}/>
+        }
+    }
+
+    checkAdmin = (history) => {
+        if (this.state.currentAdmin) {
+            return <AdminHome history={history} app={this}/>
+        }
+        else if (this.state.currentClinic || this.state.currentPatient) {
+            return <UserHome history={history} app={this}/>
+        }
+        else {
+            return <AdminLogin history={history} app={this}/>
+        }
     }
 
     render() {
@@ -70,7 +105,7 @@ class App extends React.Component {
                     render={({ history }) => (
                         <div>
                             { /* Different componenets rendered depending on if someone is logged in. */}
-                            {(!this.state.currentPatient && !currentUser) ? <PatientLogin history={history} app={this}/> : <UserHome history={history} app={this}/> }
+                            {this.checkPatient(history)}
                         </div>
                         
                     )}
@@ -82,7 +117,7 @@ class App extends React.Component {
                     render={({ history }) => (
                         <div>
                             { /* Different componenets rendered depending on if someone is logged in. */}
-                            {!this.state.currentClinic && !currentUser ? <ClinicLogin history={history} app={this} />: <UserHome history={history} app={this}/>}
+                            {this.checkClinic(history)}
                         </div>
                         
                     )}
@@ -92,7 +127,7 @@ class App extends React.Component {
                 <Route exact path={["/adminlogin", "/adminhome"]}
                     render={({ history }) => (
                         <div>
-                            {!this.state.currentAdmin && !currentUser ? <AdminLogin history={history} app={this} />: <AdminHome history={history} app={this}/>}
+                            {this.checkAdmin(history)}
                         </div>
                             
                     )}

@@ -347,23 +347,6 @@ app.post('/message', (req, res) => {
 // Serve the build
 app.use(express.static(__dirname + "/team05-reactapp/build"));
 
-// Our own express middleware to check for 
-// an active user on the session cookie (indicating a logged in user.)
-// const sessionChecker = (req, res, next) => {
-//     if (req.session.patient) {
-//         res.redirect('/userhome'); // redirect to patient home if logged in.
-//     } else if (req.session.clinic) {
-//         res.redirect('/userhome'); // redirect to clinic home if logged in.
-//     } else {
-//         next(); // next() moves on to the route.
-//     }    
-// };
-
-// // login route serves the login page
-// app.get('/patientlogin', sessionChecker, (req, res) => {
-// 	res.sendFile(__dirname + "/team05-reactapp/build/index.html");
-// })
-
 // All routes other than above will go to index.html
 app.get("*", (req, res) => {
     // check for page routes that we expect in the frontend to provide correct status code.
