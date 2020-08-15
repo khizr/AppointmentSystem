@@ -15,6 +15,7 @@ const { Patient } = require("./models/patients");
 const { CalendarBooking } = require("./models/clndrBookingModel");
 const { Message } = require("./models/message");
 const { Clinic } = require("./models/clinics");
+const { Admin } = require("./models/admin");
 
 // to validate object IDs
 const { ObjectID } = require("mongodb");
@@ -182,6 +183,70 @@ app.get("/clinics/check-session", (req, res) => {
     }
 });
 
+/** Admin routes below **/
+// Set up a POST route to create a admin user
+app.post("/admins/register", (req, res) => {
+
+    // Create a new admin
+    const admin = new Admin({
+        username: req.body.username,
+        password: req.body.password
+    });
+    
+    // Save the user
+    admin.save().then(
+        admin => {
+            res.send(admin);
+        },
+        error => {
+            res.status(400).send(error); // 400 for bad request
+        }
+    );
+
+});
+
+// A route to login and create a session
+app.post("/admins/login", (req, res) => {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    // Use the static method on the Patient model to find a patient
+    // by their email and password
+    Admin.findByUserNamePassword(username, password)
+        .then(admin => {
+            // Add the admin's id to the session cookie.
+            // We can check later if this exists to ensure we are logged in.
+            req.session.admin = admin._id;
+            req.session.username = admin.username;
+            res.send({ currentUser: admin.username });
+        })
+        .catch(error => {
+            error  === 'Username Not Found' ? res.status(400).send() : res.status(406).send() 
+        });
+});
+
+// A route to logout a admin
+app.get("/admins/logout", (req, res) => {
+    // Remove the session
+    req.session.destroy(error => {
+        if (error) {
+            res.status(500).send(error);
+        } else {
+            res.send()
+        }
+    });
+});
+
+// A route to check if a admin is logged in on the session cookie
+app.get("/admins/check-session", (req, res) => {
+    if (req.session.admin) {
+        res.send({ currentUser: req.session.username });
+    } else {
+        res.status(401).send();
+    }
+});
+
+
 // A route to book an appointment for a specific date/time
 app.post("/Calendar", (req, res) => {
     log(req.body)
@@ -282,10 +347,27 @@ app.post('/message', (req, res) => {
 // Serve the build
 app.use(express.static(__dirname + "/team05-reactapp/build"));
 
+// Our own express middleware to check for 
+// an active user on the session cookie (indicating a logged in user.)
+// const sessionChecker = (req, res, next) => {
+//     if (req.session.patient) {
+//         res.redirect('/userhome'); // redirect to patient home if logged in.
+//     } else if (req.session.clinic) {
+//         res.redirect('/userhome'); // redirect to clinic home if logged in.
+//     } else {
+//         next(); // next() moves on to the route.
+//     }    
+// };
+
+// // login route serves the login page
+// app.get('/patientlogin', sessionChecker, (req, res) => {
+// 	res.sendFile(__dirname + "/team05-reactapp/build/index.html");
+// })
+
 // All routes other than above will go to index.html
 app.get("*", (req, res) => {
     // check for page routes that we expect in the frontend to provide correct status code.
-    const goodPageRoutes = ["/", "/patientlogin", "/cliniclogin", "/userhome", "/registerclinic", "/registerpatient", "/adminlogin"];
+    const goodPageRoutes = ["/", "/patientlogin", "/cliniclogin", "/userhome", "/registerclinic", "/registerpatient", "/adminlogin", "/adminhome"];
     if (!goodPageRoutes.includes(req.url)) {
         // if url not in expected page routes, set status to 404.
         res.status(404);

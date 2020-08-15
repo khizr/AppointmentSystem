@@ -17,7 +17,7 @@ import PatientRegister from './react components/Patient Registration';
 import UserHome from './react components/User Home';
 import AdminHome from './react components/Admin Home';
 
-import { readCookie } from "./actions/readcookie";
+import { readCookieClinic, readCookieAdmin, readCookiePatient } from "./actions/readcookie";
 
 
 
@@ -25,13 +25,18 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        readCookie(this); // sees if a user is logged in. 
+        readCookieClinic(this);
+        readCookiePatient(this);
+        readCookieAdmin(this); 
     }
 
     // global state passed down includes the current logged in user.
     state = {
         home: "false",
-        currentUser: null,
+        currentClinic: null,
+        currentPatient: null,
+        currentAdmin: null,
+        currentUser: false,
         usernameError: "false",
         passwordError: "false",
         repeatPassError: "false",
@@ -42,7 +47,6 @@ class App extends React.Component {
     render() {
 
         const { currentUser } = this.state;
-        console.log(currentUser)
 
         return (
             <div>
@@ -66,7 +70,7 @@ class App extends React.Component {
                     render={({ history }) => (
                         <div>
                             { /* Different componenets rendered depending on if someone is logged in. */}
-                            {!currentUser ? <PatientLogin history={history} app={this}/> : <UserHome history={history} app={this}/> }
+                            {(!this.state.currentPatient && !currentUser) ? <PatientLogin history={history} app={this}/> : <UserHome history={history} app={this}/> }
                         </div>
                         
                     )}
@@ -78,9 +82,19 @@ class App extends React.Component {
                     render={({ history }) => (
                         <div>
                             { /* Different componenets rendered depending on if someone is logged in. */}
-                            {!currentUser ? <ClinicLogin history={history} app={this} />: <UserHome history={history} app={this}/>}
+                            {!this.state.currentClinic && !currentUser ? <ClinicLogin history={history} app={this} />: <UserHome history={history} app={this}/>}
                         </div>
                         
+                    )}
+                />
+
+                {/* Routes to Admin Home if admin is logged in, otherwise goes to Admin Login page*/}
+                <Route exact path={["/adminlogin", "/adminhome"]}
+                    render={({ history }) => (
+                        <div>
+                            {!this.state.currentAdmin && !currentUser ? <AdminLogin history={history} app={this} />: <AdminHome history={history} app={this}/>}
+                        </div>
+                            
                     )}
                 />
 
@@ -95,16 +109,6 @@ class App extends React.Component {
                 <Route exact path='/Chat'>
                     <Chat/>
                 </Route>
-
-                
-                <Route exact path='/adminlogin'
-                    render={({ history }) => (
-                        <div>
-                            {<AdminLogin history={history}/>}
-                        </div>
-                            
-                    )}
-                />
 
                 <Route exact path= '/registerclinic'
                     render={({ history }) => (
@@ -123,11 +127,6 @@ class App extends React.Component {
                             
                     )}
                 />
-
-                <Route exact path='/Admin Home'>
-                    <AdminHome/>
-                </Route>
-
                 
             </Switch>
             </BrowserRouter>

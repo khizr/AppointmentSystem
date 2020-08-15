@@ -5,7 +5,6 @@ import TextField from '@material-ui/core/TextField';
 import HomeIcon from '@material-ui/icons/Home';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import Banner from "./static/banner.png"
-import { Link } from "react-router-dom";
 import "./styles.css";
 
 import { updateForm, login } from "../../actions/clinic";
@@ -77,8 +76,8 @@ class ClinicLogin extends React.Component {
               name="password" 
               id="filled-basic"
               label="Password"
-              type="password" 
               variant="filled" 
+              type="password" 
               fullWidth
               onChange={e => updateForm(this, e.target)}
               error={app.state.passwordError === "true"}

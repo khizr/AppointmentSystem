@@ -5,78 +5,41 @@ import TextField from '@material-ui/core/TextField';
 import HomeIcon from '@material-ui/icons/Home';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import Banner from "./static/banner.png"
-import { Link } from "react-router-dom";
 import "./styles.css";
+
+import { updateForm, login } from "../../actions/admin";
 
 /* Component for the Map page */
 class AdminLogin extends React.Component {
 
-  state = {
-    adminUser: "",
-    adminPass: "",
-    incorrectUser: "",
-    incorrectPass:"",
-    userError: "",
-    passError:"",
-    displayHelp: ""
+  constructor(props) {
+    super(props);
+    this.props.history.push("/adminlogin");
   }
 
-  successfullLogin = () => {
-    
-    
-    if ( this.state.adminUser === "admin" && this.state.adminPass === "admin") {
-      window.location.href="/Admin Home";
-    }
+  // login form state
+  state = {
+    username: "",
+    password: ""
+  }
 
-    if ( this.state.adminUser === "admin") {
-      this.setState({
-        userError: "false" 
-      });
-    }
-
-    if ( this.state.adminPass === "admin") {
-      this.setState({
-        passError: "false" 
-      });
-    }
-
-    if ( this.state.adminUser !== "admin") {
-      this.setState({
-        userError: "true" 
-      });
-    }
-
-    if ( this.state.adminPass !== "admin") {
-      this.setState({
-        passError: "true" 
-      });
-    }
-
-  };
-
-  handleInputChange = event => {
-    
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value
-    });
-
-
-  };
+  // Pushes home link into prop, redirects page to home
+  goHome = () => {
+    this.props.history.push("/");
+  }
 
   render() {
+
+    const { app } = this.props
+
     return (
       <div className="home__bg center">
-        <Link className="component__button-link" to={"./"}>
             <Button variant="contained"
             color="secondary" 
             style={{ borderRadius: 50}}
+            onClick={this.goHome}
             endIcon={<HomeIcon />}>
             Home</Button>
-        </Link>
 
         <div className="admin_login">
 
@@ -91,14 +54,14 @@ class AdminLogin extends React.Component {
             <form noValidate autoComplete="off">
 
               <TextField 
-              name="adminUser"
+              name="username"
               id="filled-basic" 
               label="Username" 
               variant="filled" 
               fullWidth
-              onChange={this.handleInputChange}
-              error={this.state.userError === "true"}
-              helperText={this.state.userError === "true" ? 'Incorrect Username' : ''}
+              onChange={e => updateForm(this, e.target)}
+              error={app.state.usernameError === "true"}
+              helperText={app.state.usernameError === "true" ? 'Username Not Found' : ''}
               />
 
             </form>
@@ -110,14 +73,15 @@ class AdminLogin extends React.Component {
             <form noValidate autoComplete="off">
 
               <TextField
-              name="adminPass" 
+              name="password" 
               id="filled-basic"
               label="Password" 
               variant="filled" 
+              type="password" 
               fullWidth
-              onChange={this.handleInputChange}
-              error={this.state.passError === "true"}
-              helperText={this.state.passError === "true" ? 'Incorrect Password' : ''}
+              onChange={e => updateForm(this, e.target)}
+              error={app.state.passwordError === "true"}
+              helperText={app.state.passwordError === "true" ? 'Incorrect Password' : ''}
               />
               
 
@@ -129,9 +93,7 @@ class AdminLogin extends React.Component {
             <Button variant="contained"
             color="secondary" 
             fullWidth
-            onClick={
-              this.successfullLogin
-            }
+            onClick={() => login(this, app)}
             endIcon={<VpnKeyIcon />}>
             Login</Button>
 

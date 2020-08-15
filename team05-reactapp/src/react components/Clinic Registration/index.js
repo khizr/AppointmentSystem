@@ -100,7 +100,7 @@ class ClinicRegister extends React.Component {
   
       }
 
-    }, 500)
+    }, 1000)
 
   }
 
