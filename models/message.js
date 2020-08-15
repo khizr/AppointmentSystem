@@ -7,6 +7,18 @@ const Message = mongoose.model('Message', {
 		required: true,
 		minlegth: 1,
 		trim: true
+	},
+	from_user: {
+		type: String,
+		required: true,
+		minlegth: 1,
+		trim: true
+	},
+	to_user: {
+		type: String,
+		required: true,
+		minlegth: 1,
+		trim: true
 	}
 })
 

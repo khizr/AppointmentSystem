@@ -311,6 +311,26 @@ app.get('/Calendar', (req, res) => {
 	})
 })
 
+// A route to get list of messages
+app.get('/message', (req, res) => {
+
+	// check mongoose connection established.
+	if (mongoose.connection.readyState != 1) {
+		log('Issue with mongoose connection')
+		res.status(500).send('Internal server error')
+		return;
+	} 
+
+	Message.find().then((message) => {
+        res.send({ message }) 
+        console.log("post request completed")
+	})
+	.catch((error) => {
+		log(error)
+		res.status(500).send("Internal Server Error")
+	})
+})
+
 // Other routes
 app.post('/message', (req, res) => {
 	// log(req.body)
@@ -321,14 +341,16 @@ app.post('/message', (req, res) => {
 		res.status(500).send('Internal server error')
 		return;
 	}  
-
-	// Create a new student using the Student mongoose model
+    console.log("post request made")
+	// Create a new message using the Message mongoose model
 	const message = new Message({
-		text: req.body.text
+        text: req.body.text,
+        to_user: req.body.to_user,
+        from_user: req.body.from_user
 	})
 
 
-	// Save student to the database
+	// Save message to the database
 	message.save().then((result) => {
         res.send(result)
         console.log("sent")
@@ -341,6 +363,7 @@ app.post('/message', (req, res) => {
 		}
 	})
 })
+
 
 
 /*** Webpage routes below **********************************/
