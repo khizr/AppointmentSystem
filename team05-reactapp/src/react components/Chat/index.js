@@ -35,7 +35,7 @@ class Chat extends React.Component {
       sentMessages: messageList
     })
 
-    console.log("got heeere")
+    console.log("got heeere111")
     console.log("got heeere2")
 
     const url = '/message';
