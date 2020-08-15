@@ -36,7 +36,7 @@ class Chat extends React.Component {
     })
 
     console.log("got heeere111")
-    console.log("got heeere2")
+    console.log("got heeere232")
 
     const url = '/message';
 
