@@ -8,10 +8,54 @@ import { Link } from "react-router-dom";
 /* Component for the Chat page */
 class Chat extends React.Component {
 
+  getMessages = () => {
+
+    const url = '/message';
+
+    //GET REQUEST STARTS HERE
+    fetch(url)
+    .then((res) => { 
+        if (res.status === 200) {
+            // return a promise that resolves with the JSON body
+           return res.json() 
+       } else {
+            alert('Could not get messages')
+       }                
+    })
+    .then((json) => {  // the resolved promise with the JSON body
+        console.log(json)
+        
+        const messageList = []
+
+        json.message.map((s) => {
+          if (s.from_user === this.state.from_user){
+            const message = [ "You", s.to_user, s.text]
+            messageList.push(message)
+          }
+          else if (s.to_user === this.state.from_user){
+            const message = [s.from_user, s.to_user, s.text]
+            messageList.push(message)
+          }
+        })
+
+        this.setState({
+          message_list: messageList
+        })
+        console.log(this.state.message_list)
+
+    }).catch((error) => {
+        console.log(error)
+    })
+
+  }
+
+
   state = {
     to_user: "",
     message: "",
-    sentMessages: []
+    message_list: [],
+    from_user: "anon",
+    msg_status: this.getMessages()
   }
 
   handleInputChange = (event) => {
@@ -38,47 +82,40 @@ class Chat extends React.Component {
   
   }
 
+
+
   sendMessage = () => {
 
-    const messageList = this.state.sentMessages
-    const message = {text: this.state.message}
-    messageList.push(message)
-
-    this.setState({
-      sentMessages: messageList
-    })
-
-    console.log(this.state.to_user)
-    console.log("got heeere2")
-
+    // the URL for the request
     const url = '/message';
 
+    // The data we are going to send in our request
     let data = {
-      name: message
+        to_user: this.state.to_user,
+        text: this.state.message,
+        from_user: this.state.from_user
     }
-    console.log('created req')
+    // Create our request constructor with all the parameters we need
     const request = new Request(url, {
-      method: 'post', 
-      body: JSON.stringify(data),
-      headers: {
-          'Accept': 'application/json, text/plain, */*',
-          'Content-Type': 'application/json'
-      },
+        method: 'post', 
+        body: JSON.stringify(data),
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-Type': 'application/json'
+        },
     });
 
+    // Send the request with fetch()
     fetch(request)
     .then(function(res) {
-        console.log('msg')
+
         // Handle response we get from the API.
         // Usually check the error codes to see what happened.
         if (res.status === 200) {
             // If student was added successfully, tell the user.
-            console.log('added message')
+            console.log('Added message')
            
         } else {
-            // If server couldn't add the student, tell the user.
-            // Here we are adding a generic message, but you could be more specific in your app.
-            console.log('could not add message')
      
         }
         console.log(res)  // log the result in the console for development purposes,
@@ -87,8 +124,7 @@ class Chat extends React.Component {
         console.log(error)
     })
 
-
-
+    this.getMessages()
   }
 
   sendSuggestion = (suggestion) => {
@@ -141,10 +177,10 @@ class Chat extends React.Component {
           <button id="sendButton" onClick={this.sendMessage}>send</button>
 
           <ul id='messageList'>
-            {this.state.sentMessages.map((msg) => {
+            {this.state.message_list.map((msg) => {
               return(
                 <li className="message" key={uid(msg)}>
-                  {msg.text}
+                  <strong>{msg[0]} said: </strong>{msg[2]}
                 </li>
               )
             })}
