@@ -32,8 +32,36 @@ function distance(lat1, lon1, lat2, lon2, unit) {
 }
 
 class Clinic extends React.Component{
-  
+
+  constructor(props) {
+    this.clinics = []
+  }
+  getClinics = () => {
+    // the URL for the request
+    const url = '/StoresNearYou';
+
+    // Since this is a GET request, simply call fetch on the URL
+    fetch(url)
+    .then((res) => { 
+        if (res.status === 200) {
+            // return a promise that resolves with the JSON body
+            return res.json() 
+        } else {
+            alert('Could not get bookings')
+        }                
+    })
+    .then((json) => {  // tbookingshe resolved promise with the JSON body      
+        json.clinics.map((s) => {
+            this.clinics.append(<Clinic name="Collegeway Clinic" address="2686 The Collegeway, Mississauga, ON L5L 2M9" postal="L5L 2M9" distance="0" />)
+        })
+    }).catch((error) => {
+        console.log(error)
+    })
+  }
+
   render(){
+    this.getClinics()
+
     return(
       <tr>
         <td><b>{this.props.name}</b></td>
@@ -44,38 +72,14 @@ class Clinic extends React.Component{
     )
   }
 }
-let clinics = []
-
-getClinics = () => {
-  // the URL for the request
-  const url = '/StoresNearYou';
-
-  // Since this is a GET request, simply call fetch on the URL
-  fetch(url)
-  .then((res) => { 
-      if (res.status === 200) {
-          // return a promise that resolves with the JSON body
-          return res.json() 
-      } else {
-          alert('Could not get bookings')
-      }                
-  })
-  .then((json) => {  // tbookingshe resolved promise with the JSON body      
-      json.clinics.map((s) => {
-          clinics.append(<Clinic name="Collegeway Clinic" address="2686 The Collegeway, Mississauga, ON L5L 2M9" postal="L5L 2M9" distance="0" />)
-      })
-  }).catch((error) => {
-      console.log(error)
-  })
-}
-getClinics();
+// this.getClinics();
 {/* <Clinic name="Collegeway Clinic" address="2686 The Collegeway, Mississauga, ON L5L 2M9" postal="L5L 2M9" distance="0" />, 
 <Clinic name="New Life Clinic" address="2655 Liruma Rd Unit 4, Mississauga, ON L5K 1Y8" postal="L5K 1Y8" distance="0"/>,
 <Clinic name="Therahands Health Clinic" address="Ridgeway Dr, Mississauga, ON L5L 5M6" postal="L5L 5M6" distance="0"/>] */}
 class Table extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {postal: "", myClinics: clinics}
+    this.state = {postal: "", myClinics: this.clinics}
   }
   static getDerivedStateFromProps(props, state) {
     return {postal: props.postal, myClinics: props.myClinics};
@@ -146,19 +150,19 @@ class StoresNearYou extends React.Component {
         let result = await resp
         if(!errFlag){
           let clinic;
-          for (let i =0; i < clinics.length; i++){
+          for (let i =0; i < this.clinics.length; i++){
                 
-                let resp2 = Geocode.fromAddress(clinics[i].props.postal).then(
+                let resp2 = Geocode.fromAddress(this.clinics[i].props.postal).then(
                   response => {
-                    clinic = clinics[i]
+                    clinic = this.clinics[i]
                     myLat2 = response.results[0].geometry.location.lat;
                     myLng2 = response.results[0].geometry.location.lng;
                     let dist = distance(myLat, myLng, myLat2, myLng2, "K")
                     
                     if (dist > obj.state.maxDistance){
-                      clinics.splice(i)
+                      this.clinics.splice(i)
                     }else{
-                      clinics[i] = (<Clinic name={clinic.props.name} address={clinic.props.address} postal={clinic.props.postal} distance={Math.round(dist * 10) / 10} />) 
+                      this.clinics[i] = (<Clinic name={clinic.props.name} address={clinic.props.address} postal={clinic.props.postal} distance={Math.round(dist * 10) / 10} />) 
                     }
                   },
                   error => {
@@ -169,7 +173,7 @@ class StoresNearYou extends React.Component {
                 console.log(myLat2, myLng2)
           }
 
-          clinics.sort(function(clinic, otherClinic){
+          this.clinics.sort(function(clinic, otherClinic){
             if(clinic.props.distance > otherClinic.props.distance){
                 return 1
             }else if (clinic.props.distance < otherClinic.props.distance){
@@ -202,8 +206,8 @@ class StoresNearYou extends React.Component {
 
       if (this.state.show) {
         clinicsTable = <Table postal={this.state.postal}
-                        myClinics={clinics}/>;
-        if(clinics.length === 0){
+                        myClinics={this.clinics}/>;
+        if(this.clinics.length === 0){
           clinicsTable = <div>
           <div id = "round-container2">
                 <h1>No Clinics Found</h1>
