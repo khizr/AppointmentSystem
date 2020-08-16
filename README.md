@@ -10,7 +10,7 @@ Features
 Registration: Implemented two registration pages for registration for clinics and patients. On the home 
 page, you can click on register and select patient or clinic. On the register page, you need to 
 set a username and password for patients and for clinic you need to enter an address and clinic name 
-additionally. We also implemented redirection so that only certain users can access certain pages.
+additionally. We also implemented redirection so that only certain users can access certain pages. You must be logged in to access pages.
 
 Log In Pages: Implemented log in pages for clincs, patients, and the admin. From the home page, you
  can select which user you want to login as and the page will direct you to the appropirate login page. 
