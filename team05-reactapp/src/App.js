@@ -142,7 +142,7 @@ class App extends React.Component {
                 </Route>
 
                 <Route exact path='/Chat'>
-                    <Chat/>
+                    <Chat app={this.state}/>
                 </Route>
 
                 <Route exact path= '/registerclinic'
