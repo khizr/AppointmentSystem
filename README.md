@@ -6,9 +6,14 @@ Features
 
 Clinics Near You: Once a patient has logged in he/she can head over to the clinics page and put in thier postal code or address to to find the clinics closest to them. Once they hit the search button the clinics will be sorted in increasing order with respect to distance. Users can also set the Max distance to search within a max distance and only show clinics within that distance. Each clinic also has a book button that redircts you to the calendar page where you can book appointments. 
 
-
-
-
+Calendar: The calendar allows users to book appointments. You can only go to the calendar if you are
+logged in as a patient. On the calendar you can change months to select the month you want to book an
+appointment in. You can then click on a day on the calendar and the date you clicked on will 
+display on the right hand side showing you have selected a day. You can then use the dropdown 
+to select a time in the selected day and then click book to book the appointment on the date. 
+If the time slot is taken on the day, you will be alerted that the slot is taken. Otherwise, you 
+will be notified that the booking has been made. You can also use the view appointments button 
+to view your appointments with the clinic.
 
 # Phase 1
 
