@@ -22,6 +22,8 @@ class ClinicRegister extends React.Component {
 
   // register form state
   state = {
+    name: "",
+    address: "",
     username: "",
     password: ""
   }
@@ -127,8 +129,10 @@ class ClinicRegister extends React.Component {
             <form noValidate autoComplete="off">
 
               <TextField 
+              name="name"
               id="filled-basic" 
-              label="Clinic Name" 
+              label="Clinic Name"
+              onChange={e => updateForm(this, e.target)} 
               variant="filled" 
               fullWidth
               />
@@ -157,9 +161,11 @@ class ClinicRegister extends React.Component {
             <form noValidate autoComplete="off">
 
               <TextField 
+              name="address"
               id="filled-basic" 
               label="Address" 
-              variant="filled" 
+              variant="filled"
+              onChange={e => updateForm(this, e.target)} 
               fullWidth
               />
 

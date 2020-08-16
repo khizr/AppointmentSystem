@@ -8,6 +8,18 @@ const bcrypt = require('bcryptjs')
 // Making a Mongoose model a little differently: a Mongoose Schema
 // Allows us to add additional functionality.
 const ClinicSchema = new mongoose.Schema({
+	name: {
+		type: String,
+		minlength: 1,
+		trim: true,
+		unique: true,
+	},
+	address: {
+		type: String,
+		minlength: 1,
+		trim: true,
+		unique: true,
+	},
 	username: {
 		type: String,
 		required: true,
