@@ -35,6 +35,64 @@ other Admin, Patient or Clinic. Users can view their chat history as messages wi
 a database and can be viewed even after the session has ended. Users can only see messages that 
 are sent or received by them. This ensures privacy between the various users.
 
+# Express Routes
+
+what they are used for
+what data sent
+what data returned
+
+Registration for Patients: app.post("/patients/register", (req, res)
+Used to register Patients. Need to send username and password. 
+
+Login for Patients: app.post("/patients/login", (req, res)
+Used to login patients. Need to send username and password. Returns JSON with username.
+
+Logout for Patients: app.get("/patients/logout", (req, res)
+Used to logout patients. Needs and returns nothing.
+
+Check Session for Users: app.get("/patients/check-session", (req, res)
+Checks to see who is currently logged in. Needs nothing, returns username of user that is logged in.
+
+Register for Clinics: app.post("/clinics/register", (req, res)
+Used to register clinics into DB. Takes in name, address, username, and password, returns nothing.
+
+Login for Clinics: app.post("/clinics/login", (req, res)
+Logs in clinics. Takes username and password and checks username and password in database. Returns username of logged in clinic.
+
+Logs out clinic user. app.get("/clinics/logout", (req, res)
+Logs out clinic user. Recieves adn returns nothing.
+
+Check session for clinic. app.get("/clinics/check-session", (req, res)
+Returns username of logged in clinic user.
+
+Register Admin. app.post("/admins/register", (req, res)
+Registers an admin user. Takes username and password. Returns nothing.
+
+Logs in Admin. app.post("/admins/login", (req, res)
+Logs in Admin. Recieves username and password. Returns username of logged in user.
+
+Logs out Admin. app.get("/admins/logout", (req, res)
+Takes and returns nothing.
+
+Check session for admin. app.get("/admins/check-session", (req, res)
+Check session for admin. Recieves nothing, reutrns username of logged in user.
+
+Calendar Post. app.post("/Calendar", (req, res)
+Used to book an appointment in the bookings collection via the calendar page.
+Takes in clincName, month, day, time, year, and patient.
+If no booking in same time slot, returns the booking made.
+
+Calendar Get. app.get('/Calendar', (req, res)
+To get appointments for a specific user.
+Takes in username. Returns all appointments for the user.
+
+Gets Messages. app.get('/message', (req, res)
+To get messages. Recieves nothing, returns all messages in DB.
+
+Posts Messages. app.post('/message', (req, res)
+Sends message to DB. Recieves text of message, from_user, and to_user. Returns saved message.
+
+
 # Phase 1
 
 General: Cloud Clinics is an application for pateints(users) and clinics(admins) to schdeule and manage apointments. Users can book appointments at clinics by veiwing available appointments at thier respective calendars. Admins(clinics) can manage bookings and remove appointments. It is an application to make booking appointments easy without having to call clinics.
