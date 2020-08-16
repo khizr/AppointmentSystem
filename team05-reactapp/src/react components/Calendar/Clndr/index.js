@@ -14,7 +14,7 @@ class Clndr extends React.Component {
             months: ["March", "April", "May", "June", "July", "August", "September", "October", "November", "December", "January", "February"],
             maxDays: [31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 31, 28],
             weekDays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            currentMonth: "June",
+            currentMonth: "August",
             currentDay: "1",
             currentYear: "2020",
             requestStatus: ""

@@ -79,9 +79,61 @@ class App extends React.Component {
         }
     }
 
-    render() {
+    checkClinicRegister = (history) => {
+        if (this.state.currentAdmin) {
+            return <AdminHome history={history} app={this}/>
+        }
+        else if (this.state.currentClinic || this.state.currentPatient) {
+            return <UserHome history={history} app={this}/>
+        }
+        else {
+            return <ClinicRegister history={history} app={this}/>
+        }
+    }
 
-        const { currentUser } = this.state;
+    checkPatientRegister = (history) => {
+        if (this.state.currentAdmin) {
+            return <AdminHome history={history} app={this}/>
+        }
+        else if (this.state.currentClinic || this.state.currentPatient) {
+            return <UserHome history={history} app={this}/>
+        }
+        else {
+            return <PatientRegister history={history} app={this}/>
+        }
+    }
+
+    checkCalender = (history) => {
+        if (this.state.currentAdmin) {
+            return <AdminHome history={history} app={this}/>
+        }
+        else if (this.state.currentClinic) {
+            return <UserHome history={history} app={this}/>
+        }
+        else if (this.state.currentPatient) {
+            return <Calendar history={history} app={this}/>
+        }
+        else {
+            return <Home history={history}/>
+        }
+    }
+
+    checkStores = (history) => {
+        if (this.state.currentAdmin) {
+            return <AdminHome history={history} app={this}/>
+        }
+        else if (this.state.currentClinic) {
+            return <UserHome history={history} app={this}/>
+        }
+        else if (this.state.currentPatient) {
+            return <StoresNearYou history={history} app={this}/>
+        }
+        else {
+            return <Home history={history}/>
+        }
+    }
+
+    render() {
 
         return (
             <div>
@@ -133,13 +185,21 @@ class App extends React.Component {
                     )}
                 />
 
-                <Route exact path='/Calendar'>
-                    <Calendar/>
-                </Route>
+                <Route exact path='/calendar'
+                    render={({ history }) => (
+                        <div>
+                            {this.checkCalender(history)}
+                        </div>
+                    )}
+                />
 
-                <Route exact path='/StoresNearYou'>
-                    <StoresNearYou/>
-                </Route>
+                <Route exact path='/StoresNearYou'
+                    render={({ history }) => (
+                        <div>
+                            {this.checkStores(history)}
+                        </div>
+                    )}
+                />
 
                 <Route exact path='/Chat'>
                     <Chat app={this.state}/>
@@ -148,7 +208,7 @@ class App extends React.Component {
                 <Route exact path= '/registerclinic'
                     render={({ history }) => (
                         <div>
-                           <ClinicRegister history={history} app={this}/>
+                           {this.checkClinicRegister(history)}
                         </div>
                             
                     )}
@@ -157,7 +217,7 @@ class App extends React.Component {
                 <Route exact path='/registerpatient'
                     render={({ history }) => (
                         <div>
-                            {<PatientRegister history={history} app={this}/>}
+                            {this.checkPatientRegister(history)}
                         </div>
                             
                     )}

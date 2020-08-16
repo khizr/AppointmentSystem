@@ -119,6 +119,8 @@ app.post("/clinics/register", (req, res) => {
 
     // Create a new clinic
     const clinic = new Clinic({
+        name: req.body.name,
+        address: req.body.address,
         username: req.body.username,
         password: req.body.password
     });
@@ -311,6 +313,25 @@ app.get('/Calendar', (req, res) => {
 	})
 })
 
+
+app.get('/StoresNearYou', (req, res) => {
+
+	// check mongoose connection established.
+	if (mongoose.connection.readyState != 1) {
+		log('Issue with mongoose connection')
+		res.status(500).send('Internal server error')
+		return;
+	} 
+
+	Clinic.find().then((clinics) => {
+		res.send({ clinics }) // can wrap students in object if want to add more properties
+	})
+	.catch((error) => {
+		log(error)
+		res.status(500).send("Internal Server Error")
+	})
+})
+
 // A route to get list of messages
 app.get('/message', (req, res) => {
 
@@ -373,7 +394,7 @@ app.use(express.static(__dirname + "/team05-reactapp/build"));
 // All routes other than above will go to index.html
 app.get("*", (req, res) => {
     // check for page routes that we expect in the frontend to provide correct status code.
-    const goodPageRoutes = ["/", "/patientlogin", "/cliniclogin", "/userhome", "/registerclinic", "/registerpatient", "/adminlogin", "/adminhome"];
+    const goodPageRoutes = ["/", "/patientlogin", "/cliniclogin", "/userhome", "/registerclinic", "/registerpatient", "/adminlogin", "/adminhome", "/calendar"];
     if (!goodPageRoutes.includes(req.url)) {
         // if url not in expected page routes, set status to 404.
         res.status(404);
