@@ -44,7 +44,6 @@ class Clinic extends React.Component{
     )
   }
 }
-[]
 
 // getClinics = () => {
 //   // the URL for the request
