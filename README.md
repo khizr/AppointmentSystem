@@ -4,6 +4,17 @@
 
 Features 
 
+Registration: Implemented two registration pages for registration for clinics and patients. On the home 
+page, you can click on register and select patient or clinic. On the register page, you need to 
+set a username and password for patients and for clinic you need to enter an address and clinic name 
+additionally. We also implemented redirection so that only certain users can access certain pages.
+
+Log In Pages: Implemented log in pages for clincs, patients, and the admin. From the home page, you
+ can select which user you want to login as and the page will direct you to the appropirate login page. 
+
+Home Page: Made the home page and links to each of the other pages and redirection when not logged in.
+ Designed slides.
+
 Clinics Near You: Once a patient has logged in he/she can head over to the clinics page and put in thier postal code or address to to find the clinics closest to them. Once they hit the search button the clinics will be sorted in increasing order with respect to distance. Users can also set the Max distance to search within a max distance and only show clinics within that distance. Each clinic also has a book button that redircts you to the calendar page where you can book appointments. 
 
 Calendar: The calendar allows users to book appointments. You can only go to the calendar if you are
