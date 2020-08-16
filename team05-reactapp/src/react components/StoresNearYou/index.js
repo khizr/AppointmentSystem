@@ -44,34 +44,34 @@ class Clinic extends React.Component{
     )
   }
 }
-let clinics = []
+[]
 
-getClinics = () => {
-  // the URL for the request
-  const url = '/StoresNearYou';
+// getClinics = () => {
+//   // the URL for the request
+//   const url = '/StoresNearYou';
 
-  // Since this is a GET request, simply call fetch on the URL
-  fetch(url)
-  .then((res) => { 
-      if (res.status === 200) {
-          // return a promise that resolves with the JSON body
-          return res.json() 
-      } else {
-          alert('Could not get bookings')
-      }                
-  })
-  .then((json) => {  // tbookingshe resolved promise with the JSON body      
-      json.clinics.map((s) => {
-          clinics.append(<Clinic name="Collegeway Clinic" address="2686 The Collegeway, Mississauga, ON L5L 2M9" postal="L5L 2M9" distance="0" />)
-      })
-  }).catch((error) => {
-      console.log(error)
-  })
-}
-getClinics();
-{/* <Clinic name="Collegeway Clinic" address="2686 The Collegeway, Mississauga, ON L5L 2M9" postal="L5L 2M9" distance="0" />, 
+//   // Since this is a GET request, simply call fetch on the URL
+//   fetch(url)
+//   .then((res) => { 
+//       if (res.status === 200) {
+//           // return a promise that resolves with the JSON body
+//           return res.json() 
+//       } else {
+//           alert('Could not get bookings')
+//       }                
+//   })
+//   .then((json) => {  // tbookingshe resolved promise with the JSON body      
+//       json.clinics.map((s) => {
+//           clinics.append(<Clinic name="Collegeway Clinic" address="2686 The Collegeway, Mississauga, ON L5L 2M9" postal="L5L 2M9" distance="0" />)
+//       })
+//   }).catch((error) => {
+//       console.log(error)
+//   })
+// }
+
+let clinics = [<Clinic name="Collegeway Clinic" address="2686 The Collegeway, Mississauga, ON L5L 2M9" postal="L5L 2M9" distance="0" />, 
 <Clinic name="New Life Clinic" address="2655 Liruma Rd Unit 4, Mississauga, ON L5K 1Y8" postal="L5K 1Y8" distance="0"/>,
-<Clinic name="Therahands Health Clinic" address="Ridgeway Dr, Mississauga, ON L5L 5M6" postal="L5L 5M6" distance="0"/>] */}
+<Clinic name="Therahands Health Clinic" address="Ridgeway Dr, Mississauga, ON L5L 5M6" postal="L5L 5M6" distance="0"/>]
 class Table extends React.Component {
   constructor(props) {
     super(props);
