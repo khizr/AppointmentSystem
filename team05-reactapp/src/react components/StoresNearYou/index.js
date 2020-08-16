@@ -205,7 +205,7 @@ class StoresNearYou extends React.Component {
                     </div>;
       }
       return (
-        <div className="home__bg center">
+        <div>
           <div className="con">
             <Link className="component__button-link" to={"./"}>
               <Button variant="contained"

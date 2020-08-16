@@ -13,13 +13,6 @@
     text-align: left;
     text-shadow: 2px 2px 5px blue;
   }
-  
-  .home__bg {
-    background-size: cover;
-    width: 100%;
-    height: 100%;
-    background-image: url("./background.jpg");
-  }
 
   .con{
     text-align: left;
