@@ -15,6 +15,12 @@ If the time slot is taken on the day, you will be alerted that the slot is taken
 will be notified that the booking has been made. You can also use the view appointments button 
 to view your appointments with the clinic.
 
+Chat: The chat functionality is now fully functional. Previously the chat feature was all frontend 
+but not it is linked to the backend as well. Clinics, Patients and Admin can send messages to any
+other Admin, Patient or Clinic. Users can view their chat history as messages will be saved to
+a database and can be viewed even after the session has ended. Users can only see messages that 
+are sent or received by them. This ensures privacy between the various users.
+
 # Phase 1
 
 General: Cloud Clinics is an application for pateints(users) and clinics(admins) to schdeule and manage apointments. Users can book appointments at clinics by veiwing available appointments at thier respective calendars. Admins(clinics) can manage bookings and remove appointments. It is an application to make booking appointments easy without having to call clinics.
