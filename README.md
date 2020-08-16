@@ -1,4 +1,7 @@
 # team05
+# there were a few pushs right after 10 with very minor error fixes we only fixed that didnt do anythging else after the deadline
+
+Link: http://cloudclinics.herokuapp.com/
 
 # Phase 2
 
