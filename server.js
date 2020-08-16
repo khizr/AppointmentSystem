@@ -313,6 +313,25 @@ app.get('/Calendar', (req, res) => {
 	})
 })
 
+
+app.get('/StoresNearYou', (req, res) => {
+
+	// check mongoose connection established.
+	if (mongoose.connection.readyState != 1) {
+		log('Issue with mongoose connection')
+		res.status(500).send('Internal server error')
+		return;
+	} 
+
+	Clinic.find().then((clinics) => {
+		res.send({ clinics }) // can wrap students in object if want to add more properties
+	})
+	.catch((error) => {
+		log(error)
+		res.status(500).send("Internal Server Error")
+	})
+})
+
 // A route to get list of messages
 app.get('/message', (req, res) => {
 
