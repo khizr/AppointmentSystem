@@ -119,6 +119,8 @@ app.post("/clinics/register", (req, res) => {
 
     // Create a new clinic
     const clinic = new Clinic({
+        name: req.body.name,
+        address: req.body.address,
         username: req.body.username,
         password: req.body.password
     });
@@ -373,7 +375,7 @@ app.use(express.static(__dirname + "/team05-reactapp/build"));
 // All routes other than above will go to index.html
 app.get("*", (req, res) => {
     // check for page routes that we expect in the frontend to provide correct status code.
-    const goodPageRoutes = ["/", "/patientlogin", "/cliniclogin", "/userhome", "/registerclinic", "/registerpatient", "/adminlogin", "/adminhome"];
+    const goodPageRoutes = ["/", "/patientlogin", "/cliniclogin", "/userhome", "/registerclinic", "/registerpatient", "/adminlogin", "/adminhome", "/calendar"];
     if (!goodPageRoutes.includes(req.url)) {
         // if url not in expected page routes, set status to 404.
         res.status(404);

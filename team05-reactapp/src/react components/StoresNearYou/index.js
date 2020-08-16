@@ -32,6 +32,7 @@ function distance(lat1, lon1, lat2, lon2, unit) {
 }
 
 class Clinic extends React.Component{
+  
   render(){
     return(
       <tr>
@@ -86,8 +87,15 @@ class Table extends React.Component {
 class StoresNearYou extends React.Component {
     constructor(props) {
       super(props);
+      this.props.history.push("/StoresNearYou")
       this.state = {show: false, postal: '', showSearch: true, maxDistance: 3};
     }
+
+    // Pushes home link into prop, redirects page to home
+    goHome = () => {
+      this.props.history.push("/");
+    }
+
     reload = () => {
       window.location.reload();
     }

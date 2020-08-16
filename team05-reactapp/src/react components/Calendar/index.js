@@ -9,20 +9,29 @@ import HomeIcon from '@material-ui/icons/Home';
 
 /* Component for the Calendar page */
 class Calendar extends React.Component {
+    constructor(props) {
+      super(props);
+      this.props.history.push("/calendar");
+    }
+
+    // Pushes home link into prop, redirects page to home
+    goHome = () => {
+      this.props.history.push("/");
+    }
+
     render() {
       return (
         <div>
           <div className="bannerUzi">
             {/* <img className = "myImage" src={Logo} alt="Clinic Logo"></img> */}
             <span className = "buttonHome">
-              <Link className="component__button-link" to={"./"}>
                 <Button variant="contained"
                 color="secondary" 
                 style={{ borderRadius: 50}}
+                onClick={this.goHome}
                 className="homeButton"
                 endIcon={<HomeIcon />}>
                 Home</Button>
-              </Link>
             </span>
           <div className="clinicName">Company Name</div>
           {/* <div className="clinicNumber">Company Number</div> */}
