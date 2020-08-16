@@ -8,9 +8,16 @@ import { Link } from "react-router-dom";
 /* Component for the Chat page */
 class Chat extends React.Component {
 
+  constructor(props) {
+    super(props);
+  }
+
   getMessages = () => {
 
     const url = '/message';
+
+    console.log("from_user is")
+    console.log(this.state)
 
     //GET REQUEST STARTS HERE
     fetch(url)
@@ -26,6 +33,24 @@ class Chat extends React.Component {
         console.log(json)
         
         const messageList = []
+
+        if (this.props.app.currentAdmin != null){
+          this.setState({
+            from_user: this.props.app.currentAdmin
+          })
+        }
+        else if (this.props.app.currentClinic != null){
+          this.setState({
+            from_user: this.props.app.currentClinic
+          })
+        }
+        else if (this.props.app.currentPatient != null){
+          this.setState({
+            from_user: this.props.app.currentPatient
+          })
+          console.log("from user changed")
+        }
+        console.log(this.state)
 
         json.message.map((s) => {
           if (s.from_user === this.state.from_user){
@@ -133,6 +158,7 @@ class Chat extends React.Component {
   }
 
   render() {
+
     return (
       <div className="home__bg centern">
         <div id="topbar">

@@ -28,6 +28,16 @@ class UserHome extends React.Component {
       logout(app);
     } 
 
+    // goes to calendar
+    goToCalendar = () => {
+      this.props.history.push("/calendar");
+    }
+
+    // goes to stores near you
+    goToStores = () => {
+      this.props.history.push("/StoresNearYou");
+    }
+
     render() {
       const { app } = this.props
   
@@ -35,15 +45,15 @@ class UserHome extends React.Component {
         <div className="home__bg center">
           <img className="user_home_banner" src={Banner} alt="Banner" />;
           <HomeContent></HomeContent>
-          <Link className="component__button-link" to={"./../Calendar"}>
+
             <Button variant="contained"
             color="secondary" 
             style={styles.buttonStyle}
             className="button_user_home"
+            onClick={this.goToCalendar}
             endIcon={<EventIcon />}>
             Calendar
             </Button>
-          </Link>
 
           <Link className="component__button-link" to={"./../Chat"}>
             <Button variant="contained"
@@ -54,14 +64,13 @@ class UserHome extends React.Component {
             Chat</Button>
           </Link>
 
-          <Link className="component__button-link" to={"./../StoresNearYou"}>
-            <Button variant="contained"
-            color="secondary" 
-            style={styles.buttonStyle}
-            className="button_user_home"
-            endIcon={<MapIcon />}>
-            Clinics Near You</Button>
-          </Link>
+          <Button variant="contained"
+          color="secondary" 
+          style={styles.buttonStyle}
+          className="button_user_home"
+          onClick={this.goToStores}
+          endIcon={<MapIcon />}>
+          Clinics Near You</Button>
 
           <Button variant="contained"
           color="secondary" 
