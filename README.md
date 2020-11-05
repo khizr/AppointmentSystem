@@ -1,11 +1,4 @@
-# team05
-# there were a few pushs right after 10 with very minor error fixes we only fixed that didnt do anythging else after the deadline
-
-Link: http://cloudclinics.herokuapp.com/
-
-# Phase 2
-
-Features 
+# Features
 
 Registration: Implemented two registration pages for registration for clinics and patients. On the home 
 page, you can click on register and select patient or clinic. On the register page, you need to 
@@ -92,18 +85,3 @@ To get messages. Recieves nothing, returns all messages in DB.
 Posts Messages. app.post('/message', (req, res)
 Sends message to DB. Recieves text of message, from_user, and to_user. Returns saved message.
 
-
-# Phase 1
-
-General: Cloud Clinics is an application for pateints(users) and clinics(admins) to schdeule and manage apointments. Users can book appointments at clinics by veiwing available appointments at thier respective calendars. Admins(clinics) can manage bookings and remove appointments. It is an application to make booking appointments easy without having to call clinics.
-
-
-# Phase 1 Individual Contributions10
-
-Huzaifa: I implemented the Calendar page. On this page there is a calendar from which users looking to book an appointment can select a date on which they wish to book their appointment. On the right hand side a block allows you to select a time on the day selected on the calendar. Here you can select a time and submit a request to schedule an appointment for the given day and time.
-
-Khizr Khan (khannkhi4): I implemented the chat view. On this page the user can view the company's contact information such as phone number and address. The big feature of this page is the ability to communicate with the company through the chat functionality. Users can type in their own questions in the text box and click send to post their message. Additionally, users also have the option to ask ready-made questions without having to type them. Four buttons are available, each representing a frequently asked question. Upon clicking each button, the application will post the message to the chat screen without having the user do any typing. In phase 2, I will add the functionality of receiving messages from the server to allow for communication between the user and the company.
-
-Moaz (moazmuha): I implemented the maps or Clinics Near You view. You can navigate to it from the home page. Once you are there you enter your postal code. As of now there is an arbitrary list of postal codes which are the numbers ranging 1 through 10 inclusive. You can also select the maximum distance to look within from your location. When you hit the search button a table is created and displayed of the clinics close to you within your specified distance. The Clinics are listed from closest to furthest(Using there postal codes to determine distance). You can click book now for any clinic and it will take you to that clinics calendar page for now it takes you to the general calendar page. 
-
-Hamza Khan (Github Username: Obsoleete, utorid: khanha11): I implemented the home page as well as the login and register pages. The home page is pretty self explanatory, with the only problem being is that the view for me on my monitor was perfectly fine, but when viewed on my teammates laptop screens, the login and register buttons would overflow, ruining the aesthetic of the page. The login button in the top left hand corner can be used regardless if you register or not. Clicking on the login button, will open up a small menu, that will take you the user login page or the admin login page as required. The credentials for logging in as a user is as following: Username: user or user2 and Password: user or user2 respectively (Username: user and Password: user2 will not work, so the username and password used has to be the same). Once logged in as a user, the view will change in so far as there is a logout button. For now that's the only change, with more changes being apparent in phase 2 of the project. You can also login as an admin, with the following credentials: Username: admin and Password: admin. Once logged in, you will notice that the view has changed, as now there is a User List button. This User List view has not been implemented yet, however the idea behind it is that it will allow admins to add and remove users at will. Now for the register button, you can register as a clinic or a patient, as indicated when you click on the register button, it will open up a small menu which will give you the option of registering as one or the other. For now, none of the fields on the register page work for both views except the Username, Password and Repeat Password fields. If you are registering as a clinic, you can only register with the following credentials: Username: user, Password: user and Repeat Password: user. This will also be indicated by the view, if you try and register with any other credentials, it will let you know what is required of you. The same is true for the new patient view, however the credentials that are needed to register as a new patient are the following: Username: user2, Password: user2 and Repeat Password: user2. For now registering doesn't do anything, except redirect you to the home page once you have successfully registered, but in Phase 2, this view will be of more use.
